@@ -22,7 +22,7 @@ export default function Hero() {
     const tl = gsap.timeline();
 
     // =========================================
-    // 1. INVISIBLE TAP BUTTON DISAPPEARS
+    // 1. TAP AREA FADE OUT
     // =========================================
 
     tl.to(button.current, {
@@ -32,7 +32,7 @@ export default function Hero() {
     })
 
       // =========================================
-      // 2. LEFT DOOR OPENS
+      // 2. LEFT SIDE OPENS
       // =========================================
 
       .to(
@@ -46,7 +46,7 @@ export default function Hero() {
       )
 
       // =========================================
-      // 3. RIGHT DOOR OPENS
+      // 3. RIGHT SIDE OPENS
       // =========================================
 
       .to(
@@ -60,7 +60,7 @@ export default function Hero() {
       )
 
       // =========================================
-      // 4. GIF APPEARS AFTER OPENING
+      // 4. GIF REVEAL
       // =========================================
 
       .to(
@@ -68,14 +68,14 @@ export default function Hero() {
         {
           opacity: 1,
           scale: 1,
-          duration: 1.8,
+          duration: 1.5,
           ease: "power2.out",
         },
         "-=0.3"
       )
 
       // =========================================
-      // 5. TEXT APPEARS
+      // 5. TEXT REVEAL
       // =========================================
 
       .fromTo(
@@ -97,9 +97,9 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden bg-[#190505]">
 
-      {/* =========================================
+      {/* =====================================================
           GIF BACKGROUND
-      ========================================== */}
+      ===================================================== */}
 
       <div
         ref={gifSection}
@@ -107,11 +107,10 @@ export default function Hero() {
           absolute
           inset-0
           z-0
-          scale-[1.04]
+          scale-[1.03]
           opacity-0
         "
       >
-
         <img
           src={weddingGif}
           alt=""
@@ -121,17 +120,17 @@ export default function Hero() {
             object-cover
           "
         />
-
       </div>
 
 
-      {/* =========================================
-          TEXT OVER GIF
-      ========================================== */}
+      {/* =====================================================
+          WEDDING TEXT
+      ===================================================== */}
 
       <div
         ref={weddingContent}
         className="
+          pointer-events-none
           absolute
           inset-0
           z-20
@@ -144,13 +143,11 @@ export default function Hero() {
           opacity-0
         "
       >
+        <div className="w-full max-w-5xl">
 
-        <div className="max-w-5xl">
-
-          {/* TOP DECORATION */}
+          {/* DECORATIVE LINE */}
 
           <div className="mb-7 flex items-center justify-center gap-5">
-
             <span className="h-px w-14 bg-[#8d6a3e]/50" />
 
             <span className="text-xl text-[#8d6a3e]">
@@ -158,60 +155,67 @@ export default function Hero() {
             </span>
 
             <span className="h-px w-14 bg-[#8d6a3e]/50" />
-
           </div>
 
 
           {/* INTRO */}
 
-          <p className="
-            mb-7
-            font-serif
-            text-base
-            tracking-[0.08em]
-            md:text-xl
-          ">
+          <p
+            className="
+              mb-7
+              font-serif
+              text-base
+              tracking-[0.08em]
+              md:text-xl
+            "
+          >
             Mark your Calendars to rejoice in the Wedding of
           </p>
 
 
           {/* NAME 1 */}
 
-          <h1 className="
-            font-serif
-            text-5xl
-            font-medium
-            tracking-[0.06em]
-            md:text-7xl
-            lg:text-8xl
-          ">
+          <h1
+            className="
+              font-serif
+              text-5xl
+              font-medium
+              tracking-[0.06em]
+              md:text-7xl
+              lg:text-8xl
+            "
+          >
             MANAV PARIDHI
           </h1>
 
 
           {/* & */}
 
-          <div className="
-            my-3
-            font-serif
-            text-4xl
-            text-[#80633c]
-            md:text-5xl
-          ">
+          <div
+            className="
+              my-3
+              font-serif
+              text-4xl
+              text-[#80633c]
+              md:text-5xl
+            "
+          >
             &
           </div>
 
 
           {/* NAME 2 */}
 
-          <h2 className="
-            font-serif
-            text-5xl
-            font-medium
-            tracking-[0.06em]
-            md:text-7xl
-            lg:text-8xl
-          ">
+          <h2
+            className="
+              font-serif
+              text-5xl
+              font-medium
+              tracking-[0.06em]
+              md:text-7xl
+              lg:text-8xl
+            "
+          >
             RAAG PRANVI
           </h2>
 
@@ -219,35 +223,30 @@ export default function Hero() {
           {/* SCROLL */}
 
           <div className="mt-14">
-
-            <p className="
-              text-[10px]
-              uppercase
-              tracking-[0.4em]
-              text-[#705a3c]
-              md:text-xs
-            ">
+            <p
+              className="
+                text-[10px]
+                uppercase
+                tracking-[0.4em]
+                text-[#705a3c]
+                md:text-xs
+              "
+            >
               Scroll
             </p>
 
-            <div className="
-              mt-2
-              text-lg
-              text-[#705a3c]
-            ">
+            <div className="mt-2 text-lg text-[#705a3c]">
               ↓
             </div>
-
           </div>
 
         </div>
-
       </div>
 
 
-      {/* =========================================
-          ORIGINAL ENVELOPE — LEFT
-      ========================================== */}
+      {/* =====================================================
+          LEFT DOOR
+      ===================================================== */}
 
       <div
         ref={leftPanel}
@@ -261,7 +260,6 @@ export default function Hero() {
           overflow-hidden
         "
       >
-
         <img
           src={openingImage}
           alt=""
@@ -270,18 +268,17 @@ export default function Hero() {
             left-0
             top-0
             h-full
-            w-screen
+            w-[200%]
             max-w-none
             object-cover
           "
         />
-
       </div>
 
 
-      {/* =========================================
-          ORIGINAL ENVELOPE — RIGHT
-      ========================================== */}
+      {/* =====================================================
+          RIGHT DOOR
+      ===================================================== */}
 
       <div
         ref={rightPanel}
@@ -295,7 +292,6 @@ export default function Hero() {
           overflow-hidden
         "
       >
-
         <img
           src={openingImage}
           alt=""
@@ -304,38 +300,40 @@ export default function Hero() {
             right-0
             top-0
             h-full
-            w-screen
+            w-[200%]
             max-w-none
             object-cover
           "
         />
-
       </div>
 
 
-      {/* =========================================
+      {/* =====================================================
           INVISIBLE TAP AREA
-          NO EXTRA TEXT
-      ========================================== */}
+          IMAGE KE ANDAR KA TAP TO OPEN HI DIKHEGA
+      ===================================================== */}
 
-      <button
-        ref={button}
-        onClick={handleOpen}
-        aria-label="Open invitation"
-        className="
-          absolute
-          left-1/2
-          top-1/2
-          z-[100]
-          h-40
-          w-40
-          -translate-x-1/2
-          -translate-y-1/2
-          cursor-pointer
-          bg-transparent
-          outline-none
-        "
-      />
+      {!opened && (
+        <button
+          ref={button}
+          onClick={handleOpen}
+          aria-label="Open invitation"
+          className="
+            absolute
+            left-1/2
+            top-1/2
+            z-[100]
+            h-40
+            w-40
+            -translate-x-1/2
+            -translate-y-1/2
+            cursor-pointer
+            rounded-full
+            bg-transparent
+            outline-none
+          "
+        />
+      )}
 
     </section>
   );
