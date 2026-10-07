@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import Loader from "./sections/Loader";
-import Hero from "./sections/Hero";
+import Loader from "./section/Loader";
+import Hero from "./section/Hero";
 
 function App() {
   const [loading, setLoading] = useState(true);
