@@ -1,883 +1,818 @@
-
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const days = [
-  1, 2, 3, 4, 5, 6, 7,
-  8, 9, 10, 11, 12, 13, 14,
-  15, 16, 17, 18, 19, 20, 21,
-  22, 23, 24, 25, 26, 27, 28,
-  29, 30,
-];
-
-export default function SaveTheDate() {
+export default function Savethedate() {
   const sectionRef = useRef(null);
-  const frameRef = useRef(null);
+
+  const paperRef = useRef(null);
   const contentRef = useRef(null);
+
+  const topRollRef = useRef(null);
+  const bottomRollRef = useRef(null);
+
+  const calendarRef = useRef(null);
   const heartRef = useRef(null);
   const shineRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-          toggleActions: "play none none reverse",
+    const section = sectionRef.current;
+    const paper = paperRef.current;
+    const content = contentRef.current;
+    const topRoll = topRollRef.current;
+    const bottomRoll = bottomRollRef.current;
+    const calendar = calendarRef.current;
+    const heart = heartRef.current;
+    const shine = shineRef.current;
+
+    if (!section || !paper || !content || !calendar) return;
+
+    const calendarHeader = calendar.querySelector(".calendar-header");
+    const calendarCells = calendar.querySelectorAll(".calendar-cell");
+    const calendarLine = calendar.querySelector(".calendar-line");
+    const weddingDate = calendar.querySelector(".wedding-date");
+
+    let played = false;
+    let animation = null;
+
+    // -----------------------------
+    // INITIAL STATE
+    // -----------------------------
+
+    gsap.set(paper, {
+      height: 0,
+      opacity: 1,
+      transformOrigin: "top center",
+      overflow: "hidden",
+    });
+
+    gsap.set(content, {
+      opacity: 0,
+      y: 25,
+    });
+
+    // Calendar starts completely hidden
+    // and opens like a paper reveal
+    gsap.set(calendar, {
+      opacity: 1,
+      y: -10,
+      scale: 0.96,
+      transformOrigin: "top center",
+      clipPath: "inset(0 0 100% 0)",
+    });
+
+    gsap.set(calendarHeader, {
+      opacity: 0,
+      y: -5,
+    });
+
+    gsap.set(calendarLine, {
+      scaleX: 0,
+      transformOrigin: "left center",
+    });
+
+    gsap.set(calendarCells, {
+      opacity: 0,
+      y: 5,
+      scale: 0.88,
+      transformOrigin: "center center",
+    });
+
+    gsap.set(weddingDate, {
+      opacity: 0,
+      y: 12,
+    });
+
+    gsap.set(bottomRoll, {
+      opacity: 0,
+      y: -30,
+    });
+
+    gsap.set(heart, {
+      opacity: 0,
+      scale: 0.25,
+      rotation: -15,
+      transformOrigin: "center center",
+    });
+
+    gsap.set(shine, {
+      xPercent: -150,
+    });
+
+    // -----------------------------
+    // MAIN ANIMATION
+    // -----------------------------
+
+    const playAnimation = () => {
+      if (played) return;
+
+      played = true;
+
+      animation = gsap.timeline({
+        defaults: {
+          ease: "power3.out",
         },
       });
 
-      tl.fromTo(
-        frameRef.current,
-        {
-          opacity: 0,
-          scale: 0.94,
-        },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 1.3,
-          ease: "power3.out",
-        }
-      ).fromTo(
-        contentRef.current,
-        {
-          opacity: 0,
-          y: 30,
-        },
+      // 1. Scroll opens / paper unrolls
+      animation.to(paper, {
+        height: "auto",
+        duration: 1.65,
+        ease: "power3.inOut",
+      });
+
+      // 2. Main heading
+      animation.to(
+        content,
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 0.7,
           ease: "power3.out",
         },
-        "-=0.7"
+        "-=0.85"
       );
 
-      gsap.fromTo(
-        heartRef.current,
+      // 3. Calendar begins opening
+      animation.to(
+        calendar,
         {
-          scale: 0.5,
-          opacity: 0,
-        },
-        {
+          clipPath: "inset(0 0 0% 0)",
+          y: 0,
           scale: 1,
-          opacity: 1,
-          duration: 0.8,
-          ease: "back.out(1.8)",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 65%",
-            toggleActions: "play none none reverse",
-          },
-        }
+          duration: 0.9,
+          ease: "power3.inOut",
+        },
+        "-=0.25"
       );
 
-      gsap.to(heartRef.current, {
-        scale: 1.08,
-        duration: 1.6,
+      // 4. Calendar header
+      animation.to(
+        calendarHeader,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.35,
+          ease: "power2.out",
+        },
+        "-=0.35"
+      );
+
+      // 5. Gold divider draws itself
+      animation.to(
+        calendarLine,
+        {
+          scaleX: 1,
+          duration: 0.45,
+          ease: "power2.inOut",
+        },
+        "-=0.15"
+      );
+
+      // 6. Dates appear one by one
+      animation.to(
+        calendarCells,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.22,
+          stagger: 0.035,
+          ease: "back.out(1.5)",
+        },
+        "-=0.15"
+      );
+
+      // 7. Wedding date
+      animation.to(
+        weddingDate,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power3.out",
+        },
+        "-=0.05"
+      );
+
+      // 8. Heart pops
+      animation.to(
+        heart,
+        {
+          opacity: 1,
+          scale: 1,
+          rotation: 0,
+          duration: 0.65,
+          ease: "back.out(2.2)",
+        },
+        "-=0.3"
+      );
+
+      // 9. Bottom roll comes down
+      animation.to(
+        bottomRoll,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          ease: "back.out(1.7)",
+        },
+        "-=0.35"
+      );
+
+      // -----------------------------
+      // CONTINUOUS ANIMATIONS
+      // -----------------------------
+
+      // Heart breathing
+      gsap.to(heart, {
+        scale: 1.07,
+        duration: 1.5,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
+        delay: 4,
       });
 
-      gsap.to(shineRef.current, {
-        x: "120%",
+      // Top wooden/gold roll slight movement
+      gsap.to(topRoll, {
+        y: 2,
+        duration: 2.4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 2,
+      });
+
+      // Luxury shine passing over calendar
+      gsap.to(shine, {
+        xPercent: 250,
         duration: 4,
         repeat: -1,
-        repeatDelay: 3,
+        repeatDelay: 5,
         ease: "power2.inOut",
+        delay: 3,
       });
-    }, sectionRef);
+    };
 
-    return () => ctx.revert();
+    // -----------------------------
+    // INTERSECTION OBSERVER
+    // -----------------------------
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              playAnimation();
+            }, 250);
+
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+      }
+    );
+
+    observer.observe(section);
+
+    // If already visible
+    const rect = section.getBoundingClientRect();
+
+    if (
+      rect.top < window.innerHeight * 0.8 &&
+      rect.bottom > window.innerHeight * 0.2
+    ) {
+      setTimeout(() => {
+        playAnimation();
+      }, 300);
+    }
+
+    return () => {
+      observer.disconnect();
+
+      if (animation) {
+        animation.kill();
+      }
+
+      gsap.killTweensOf([
+        heart,
+        topRoll,
+        shine,
+        paper,
+        content,
+        calendar,
+        calendarHeader,
+        calendarLine,
+        calendarCells,
+        weddingDate,
+        bottomRoll,
+      ]);
+    };
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="
-        relative
-        flex
-        min-h-[670px]
-        w-full
-        items-center
-        justify-center
-        overflow-hidden
-        bg-[#eee3d5]
-        px-4
-        py-8
-        text-[#51443c]
-        md:min-h-[720px]
-      "
+      className="relative min-h-screen w-full overflow-hidden flex items-center justify-center py-16 sm:py-20"
+      style={{
+        background: "#eee2cf",
+      }}
     >
-      {/* =====================================================
-          BACKGROUND DEPTH
-      ===================================================== */}
+      {/* --------------------------------
+          SOFT BACKGROUND ORNAMENT
+      -------------------------------- */}
 
-      <div className="pointer-events-none absolute inset-0">
-
-        {/* warm center light */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            h-[560px]
-            w-[560px]
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-[#d2bea8]/35
-            blur-[80px]
-          "
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+          w-[420px] h-[420px] sm:w-[600px] sm:h-[600px]
+          rounded-full opacity-30"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(177,140,76,0.16) 0%, rgba(177,140,76,0) 70%)",
+          }}
         />
 
-        {/* large soft radial ornament */}
+        {/* Left ornament */}
+        <div className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 opacity-30">
+          <svg
+            width="80"
+            height="180"
+            viewBox="0 0 80 180"
+            fill="none"
+          >
+            <path
+              d="M40 5C20 25 20 55 40 75C60 95 60 125 40 145C30 155 30 165 40 175"
+              stroke="#9A7540"
+              strokeWidth="1"
+            />
+            <path
+              d="M40 35C25 45 25 60 40 70"
+              stroke="#9A7540"
+              strokeWidth="1"
+            />
+            <path
+              d="M40 110C55 120 55 135 40 145"
+              stroke="#9A7540"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+
+        {/* Right ornament */}
+        <div className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 opacity-30 scale-x-[-1]">
+          <svg
+            width="80"
+            height="180"
+            viewBox="0 0 80 180"
+            fill="none"
+          >
+            <path
+              d="M40 5C20 25 20 55 40 75C60 95 60 125 40 145C30 155 30 165 40 175"
+              stroke="#9A7540"
+              strokeWidth="1"
+            />
+            <path
+              d="M40 35C25 45 25 60 40 70"
+              stroke="#9A7540"
+              strokeWidth="1"
+            />
+            <path
+              d="M40 110C55 120 55 135 40 145"
+              stroke="#9A7540"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* --------------------------------
+          SCROLL
+      -------------------------------- */}
+
+      <div className="relative z-10 w-full max-w-[560px] px-4 sm:px-6">
+        {/* TOP ROLL */}
         <div
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            h-[620px]
-            w-[620px]
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            border
-            border-[#9b8b7f]/10
-          "
-        />
-
-        <div
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            h-[570px]
-            w-[570px]
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            border
-            border-[#9b8b7f]/10
-          "
-        />
-
-      </div>
-
-      {/* =====================================================
-          LARGE SIDE ORNAMENTS
-      ===================================================== */}
-
-      <SideFloral
-        side="left"
-        className="
-          absolute
-          left-[-30px]
-          top-1/2
-          hidden
-          h-[500px]
-          w-[180px]
-          -translate-y-1/2
-          text-[#81736a]/35
-          md:block
-        "
-      />
-
-      <SideFloral
-        side="right"
-        className="
-          absolute
-          right-[-30px]
-          top-1/2
-          hidden
-          h-[500px]
-          w-[180px]
-          -translate-y-1/2
-          rotate-180
-          text-[#81736a]/35
-          md:block
-        "
-      />
-
-      {/* =====================================================
-          TOP CORNER FLOURISH
-      ===================================================== */}
-
-      <div
-        className="
-          absolute
-          left-0
-          top-0
-          h-[190px]
-          w-[190px]
-          text-[#81736a]/35
-        "
-      >
-        <CornerFlourish />
-      </div>
-
-      <div
-        className="
-          absolute
-          right-0
-          top-0
-          h-[190px]
-          w-[190px]
-          rotate-90
-          text-[#81736a]/35
-        "
-      >
-        <CornerFlourish />
-      </div>
-
-      <div
-        className="
-          absolute
-          bottom-0
-          left-0
-          h-[190px]
-          w-[190px]
-          -rotate-90
-          text-[#81736a]/35
-        "
-      >
-        <CornerFlourish />
-      </div>
-
-      <div
-        className="
-          absolute
-          bottom-0
-          right-0
-          h-[190px]
-          w-[190px]
-          rotate-180
-          text-[#81736a]/35
-        "
-      >
-        <CornerFlourish />
-      </div>
-
-      {/* =====================================================
-          MAIN FRAME
-      ===================================================== */}
-
-      <div
-        ref={frameRef}
-        className="
-          relative
-          z-10
-          w-full
-          max-w-[500px]
-        "
-      >
-
-        {/* Outer frame */}
-
-        <div
-          className="
-            relative
-            border
-            border-[#8c7e73]/45
-            p-[5px]
-            shadow-[0_15px_50px_rgba(95,77,62,0.12)]
-          "
+          ref={topRollRef}
+          className="relative mx-auto h-[44px] sm:h-[48px] w-[88%] sm:w-[92%] z-20"
         >
+          {/* Main rod */}
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+            w-full h-[18px] sm:h-[20px] rounded-full"
+            style={{
+              background:
+                "linear-gradient(to bottom, #d9bd7b, #9a7135 45%, #e5c982 65%, #8d642f)",
+              boxShadow:
+                "0 5px 8px rgba(71,48,22,0.25), inset 0 1px 2px rgba(255,255,255,0.65)",
+            }}
+          />
 
-          {/* Inner frame */}
+          {/* Left knob */}
+          <div
+            className="absolute left-[-9px] sm:left-[-12px] top-1/2 -translate-y-1/2
+            w-[22px] h-[22px] sm:w-[28px] sm:h-[28px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 35% 30%, #f1dc9c, #a47736 60%, #70491e)",
+              boxShadow: "0 3px 5px rgba(70,45,18,0.3)",
+            }}
+          />
+
+          {/* Right knob */}
+          <div
+            className="absolute right-[-9px] sm:right-[-12px] top-1/2 -translate-y-1/2
+            w-[22px] h-[22px] sm:w-[28px] sm:h-[28px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 35% 30%, #f1dc9c, #a47736 60%, #70491e)",
+              boxShadow: "0 3px 5px rgba(70,45,18,0.3)",
+            }}
+          />
+        </div>
+
+        {/* PAPER */}
+        <div
+          ref={paperRef}
+          className="relative mx-auto w-[88%] sm:w-[92%] overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(90deg, #ead8bd 0%, #f8eddb 7%, #f8eddb 93%, #ead8bd 100%)",
+            borderLeft: "1px solid rgba(151,112,55,0.5)",
+            borderRight: "1px solid rgba(151,112,55,0.5)",
+            boxShadow:
+              "0 12px 30px rgba(70,48,26,0.14), inset 0 0 35px rgba(151,112,55,0.08)",
+          }}
+        >
+          {/* Paper texture */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-20"
+            style={{
+              backgroundImage:
+                "radial-gradient(rgba(100,70,30,0.14) 0.5px, transparent 0.5px)",
+              backgroundSize: "7px 7px",
+            }}
+          />
+
+          {/* Corner ornament */}
+          <div className="absolute top-5 left-5 opacity-50">
+            <svg width="38" height="38" viewBox="0 0 38 38">
+              <path
+                d="M3 30C10 28 11 20 11 15C11 9 16 4 25 4H34"
+                stroke="#a27a3e"
+                strokeWidth="1"
+                fill="none"
+              />
+              <path
+                d="M4 21C10 20 13 16 13 11"
+                stroke="#a27a3e"
+                strokeWidth="1"
+                fill="none"
+              />
+            </svg>
+          </div>
+
+          <div className="absolute top-5 right-5 opacity-50 scale-x-[-1]">
+            <svg width="38" height="38" viewBox="0 0 38 38">
+              <path
+                d="M3 30C10 28 11 20 11 15C11 9 16 4 25 4H34"
+                stroke="#a27a3e"
+                strokeWidth="1"
+                fill="none"
+              />
+              <path
+                d="M4 21C10 20 13 16 13 11"
+                stroke="#a27a3e"
+                strokeWidth="1"
+                fill="none"
+              />
+            </svg>
+          </div>
+
+          {/* --------------------------------
+              CONTENT
+          -------------------------------- */}
 
           <div
-            className="
-              relative
-              overflow-hidden
-              border
-              border-[#9c8d82]/30
-              bg-[#f4ebe1]/85
-              px-7
-              py-8
-              sm:px-10
-              md:px-12
-              md:py-9
-            "
+            ref={contentRef}
+            className="relative z-10 text-center pt-[95px] sm:pt-[115px] pb-[95px] sm:pb-[105px] px-5"
           >
-
-            {/* =================================================
-                EMBOSSED INNER ORNAMENT
-            ================================================= */}
-
+            {/* Small heading */}
             <div
-              className="
-                pointer-events-none
-                absolute
-                inset-3
-                border
-                border-[#9b8c81]/15
-              "
-            />
-
-            <div
-              className="
-                pointer-events-none
-                absolute
-                inset-6
-                border
-                border-dashed
-                border-[#9b8c81]/10
-              "
-            />
-
-            {/* =================================================
-                TOP FLORAL
-            ================================================= */}
-
-            <div
-              className="
-                pointer-events-none
-                absolute
-                left-1/2
-                top-[-3px]
-                w-[92%]
-                -translate-x-1/2
-                text-[#81736a]/45
-              "
+              className="text-[9px] sm:text-[10px] tracking-[0.38em] uppercase"
+              style={{
+                color: "#8c6838",
+                fontFamily: "serif",
+              }}
             >
-              <LargeFloral />
+              A Day To Remember
             </div>
 
-            {/* =================================================
-                BOTTOM FLORAL
-            ================================================= */}
-
-            <div
-              className="
-                pointer-events-none
-                absolute
-                bottom-[-3px]
-                left-1/2
-                w-[92%]
-                -translate-x-1/2
-                rotate-180
-                text-[#81736a]/45
-              "
+            {/* Main title */}
+            <h2
+              className="mt-3 text-[28px] sm:text-[34px] tracking-[0.13em]"
+              style={{
+                color: "#4d3825",
+                fontFamily: "Georgia, serif",
+                fontWeight: 400,
+              }}
             >
-              <LargeFloral />
+              SAVE THE DATE
+            </h2>
+
+            {/* Ornament */}
+            <div className="flex items-center justify-center gap-3 mt-4 mb-7">
+              <span className="w-[35px] h-[1px] bg-[#b28b4c] opacity-60" />
+
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+              >
+                <path
+                  d="M9 2C9 2 13 6 13 9C13 12 11 14 9 16C7 14 5 12 5 9C5 6 9 2 9 2Z"
+                  stroke="#9A7540"
+                  strokeWidth="0.8"
+                />
+              </svg>
+
+              <span className="w-[35px] h-[1px] bg-[#b28b4c] opacity-60" />
             </div>
 
-            {/* =================================================
-                CONTENT
-            ================================================= */}
+            {/* --------------------------------
+                MINI CALENDAR
+            -------------------------------- */}
 
             <div
-              ref={contentRef}
-              className="
-                relative
-                z-10
-                flex
-                flex-col
-                items-center
-                text-center
-              "
+              ref={calendarRef}
+              className="relative mx-auto w-full max-w-[160px] sm:max-w-[165px]"
+              style={{
+                color: "#4d3825",
+              }}
             >
+              {/* Shine */}
+              <div
+                ref={shineRef}
+                className="absolute pointer-events-none z-20 top-0 bottom-0 w-[25px] opacity-30"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)",
+                  transform: "skewX(-18deg)",
+                }}
+              />
 
-              {/* small title */}
-
-              <p
-                className="
-                  mt-4
-                  text-[7px]
-                  uppercase
-                  tracking-[0.5em]
-                  text-[#8b7c71]
-                "
+              {/* Calendar outer frame */}
+              <div
+                className="relative px-2.5 py-2.5 sm:px-3 sm:py-3"
+                style={{
+                  border: "1px solid rgba(154,117,64,0.65)",
+                  background:
+                    "linear-gradient(145deg, rgba(255,255,255,0.22), rgba(183,145,85,0.04))",
+                  boxShadow:
+                    "0 5px 15px rgba(91,62,29,0.10), inset 0 0 10px rgba(154,117,64,0.05)",
+                }}
               >
-                Save The Date
-              </p>
-
-              {/* Month */}
-
-              <h2
-                className="
-                  mt-3
-                  font-serif
-                  text-[45px]
-                  font-normal
-                  italic
-                  leading-none
-                  tracking-[-0.02em]
-                  text-[#51443c]
-                  sm:text-[50px]
-                "
-              >
-                November
-              </h2>
-
-              {/* Year */}
-
-              <p
-                className="
-                  mt-1
-                  font-serif
-                  text-[19px]
-                  tracking-[0.25em]
-                  text-[#76685f]
-                "
-              >
-                2026
-              </p>
-
-              {/* =================================================
-                  ORNAMENT DIVIDER
-              ================================================= */}
-
-              <div className="my-5 flex items-center gap-3">
-
-                <span className="h-px w-12 bg-[#9a8b80]/35" />
-
-                <span className="text-[9px] text-[#9a7139]">
-                  ❦
-                </span>
-
-                <span className="h-px w-12 bg-[#9a8b80]/35" />
-
-              </div>
-
-              {/* =================================================
-                  CALENDAR
-              ================================================= */}
-
-              <div className="w-full max-w-[330px]">
-
-                {/* Week */}
-
+                {/* Inner border */}
                 <div
-                  className="
-                    grid
-                    grid-cols-7
-                    border-b
-                    border-[#9b8c81]/25
-                    pb-2
-                  "
+                  className="absolute inset-[4px] pointer-events-none"
+                  style={{
+                    border: "1px solid rgba(154,117,64,0.22)",
+                  }}
+                />
+
+                {/* Month */}
+                <div
+                  ref={(el) => {
+                    if (el) el.classList.add("calendar-header");
+                  }}
+                  className="relative z-10 text-center"
                 >
-                  {[
-                    "S",
-                    "M",
-                    "T",
-                    "W",
-                    "T",
-                    "F",
-                    "S",
-                  ].map((day, index) => (
-                    <div
-                      key={`${day}-${index}`}
-                      className="
-                        text-[8px]
-                        font-medium
-                        tracking-[0.15em]
-                        text-[#81736a]
-                      "
-                    >
-                      {day}
-                    </div>
-                  ))}
+                  <div
+                    className="text-[15px] sm:text-[16px] tracking-[0.15em] uppercase"
+                    style={{
+                      fontFamily: "Georgia, serif",
+                      color: "#60472c",
+                    }}
+                  >
+                    NOVEMBER
+                  </div>
+
+                  <div
+                    className="text-[6px] sm:text-[7px] tracking-[0.25em] uppercase mt-1"
+                    style={{
+                      color: "#a17a40",
+                    }}
+                  >
+                    TWO THOUSAND TWENTY SIX
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div
+                  className="calendar-line mt-2.5 mb-2"
+                  style={{
+                    height: "1px",
+                    background:
+                      "linear-gradient(90deg, transparent, #b18a4b, transparent)",
+                  }}
+                />
+
+                {/* Weekdays */}
+                <div
+                  className="grid grid-cols-7 gap-0.5 mb-1.5"
+                  style={{
+                    color: "#9a7440",
+                  }}
+                >
+                  {["S", "M", "T", "W", "T", "F", "S"].map(
+                    (day, index) => (
+                      <div
+                        key={index}
+                        className="text-center text-[5px] sm:text-[6px] tracking-wide"
+                      >
+                        {day}
+                      </div>
+                    )
+                  )}
                 </div>
 
                 {/* Dates */}
+                <div className="grid grid-cols-7 gap-y-1">
+                  {/* Empty spaces */}
+                  {Array.from({ length: 0 }).map((_, index) => (
+                    <div key={`empty-${index}`} />
+                  ))}
 
-                <div className="grid grid-cols-7">
-
-                  {days.map((day) => {
-                    const wedding = day === 24;
+                  {Array.from({ length: 30 }, (_, index) => {
+                    const date = index + 1;
+                    const isWeddingDay = date === 24;
 
                     return (
                       <div
-                        key={day}
-                        className="
-                          relative
-                          flex
-                          h-9
-                          items-center
-                          justify-center
-                        "
+                        key={date}
+                        className="calendar-cell relative flex items-center justify-center h-[20px] sm:h-[21px]"
                       >
-
-                        <span
-                          className={`
-                            relative
-                            z-10
-                            font-serif
-                            text-[10px]
-                            ${
-                              wedding
-                                ? "font-medium text-[#51443c]"
-                                : "text-[#70635a]"
-                            }
-                          `}
-                        >
-                          {day}
-                        </span>
-
-                        {wedding && (
+                        {isWeddingDay && (
                           <div
-                            ref={heartRef}
-                            className="
-                              absolute
-                              left-1/2
-                              top-1/2
-                              h-9
-                              w-10
-                              -translate-x-1/2
-                              -translate-y-1/2
-                            "
+                            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                            style={{
+                              transform: "translateY(1px)",
+                            }}
                           >
                             <svg
-                              viewBox="0 0 50 45"
-                              className="h-full w-full"
+                              width="25"
+                              height="25"
+                              viewBox="0 0 25 25"
                             >
                               <path
-                                d="
-                                  M25 40
-                                  C22 37 5 27 5 15
-                                  C5 8 10 4 16 4
-                                  C20 4 23 6 25 10
-                                  C27 6 30 4 34 4
-                                  C40 4 45 8 45 15
-                                  C45 27 28 37 25 40Z
-                                "
-                                fill="none"
-                                stroke="#85776d"
-                                strokeWidth="1.15"
+                                d="M12.5 21C12.5 21 4 15.8 4 9.5C4 6.3 6.1 4.2 8.8 4.2C10.6 4.2 11.8 5.2 12.5 6.6C13.2 5.2 14.4 4.2 16.2 4.2C18.9 4.2 21 6.3 21 9.5C21 15.8 12.5 21 12.5 21Z"
+                                fill="rgba(158,63,54,0.08)"
+                                stroke="#9d5b4f"
+                                strokeWidth="0.8"
                               />
                             </svg>
                           </div>
                         )}
 
+                        <span
+                          className="relative z-10 text-[7px] sm:text-[7px]"
+                          style={{
+                            color: isWeddingDay ? "#8f4038" : "#5d4832",
+                            fontWeight: isWeddingDay ? 600 : 400,
+                          }}
+                        >
+                          {date}
+                        </span>
                       </div>
                     );
                   })}
-
                 </div>
-
               </div>
 
-              {/* =================================================
-                  WEDDING DATE
-              ================================================= */}
-
-              <div className="mt-5">
-
-                <div className="flex items-center justify-center gap-3">
-
-                  <span className="h-px w-9 bg-[#a68149]/35" />
-
-                  <span className="text-[8px] text-[#9a7139]">
-                    ✦
-                  </span>
-
-                  <span className="h-px w-9 bg-[#a68149]/35" />
-
-                </div>
-
-                <p
-                  className="
-                    mt-3
-                    text-[7px]
-                    uppercase
-                    tracking-[0.4em]
-                    text-[#8b7c71]
-                  "
+              {/* Heart */}
+              <div
+                ref={heartRef}
+                className="absolute left-1/2 -translate-x-1/2 -bottom-[13px] z-20"
+              >
+                <svg
+                  width="27"
+                  height="27"
+                  viewBox="0 0 40 40"
+                  fill="none"
                 >
-                  Our Wedding Day
-                </p>
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="18"
+                    fill="#f7eddd"
+                    stroke="#a77b3e"
+                    strokeWidth="1"
+                  />
 
-                <p
-                  className="
-                    mt-2
-                    font-serif
-                    text-lg
-                    tracking-[0.08em]
-                    text-[#51443c]
-                  "
-                >
-                  24 November 2026
-                </p>
-
-                <p
-                  className="
-                    mt-1
-                    font-serif
-                    text-[9px]
-                    italic
-                    text-[#85776d]
-                  "
-                >
-                  The day our forever begins
-                </p>
-
+                  <path
+                    d="M20 28C20 28 11 22.6 11 16.7C11 13.6 13 11.5 15.7 11.5C17.7 11.5 19.1 12.7 20 14.2C20.9 12.7 22.3 11.5 24.3 11.5C27 11.5 29 13.6 29 16.7C29 22.6 20 28 20 28Z"
+                    fill="#9d5b4f"
+                  />
+                </svg>
               </div>
-
             </div>
 
-            {/* =================================================
-                GOLD SHIMMER
-            ================================================= */}
-
+            {/* Wedding date */}
             <div
-              ref={shineRef}
-              className="
-                pointer-events-none
-                absolute
-                -left-[30%]
-                top-0
-                h-full
-                w-[15%]
-                -skew-x-12
-                bg-gradient-to-r
-                from-transparent
-                via-white/20
-                to-transparent
-              "
-            />
+              className="wedding-date mt-7"
+              style={{
+                color: "#63482d",
+              }}
+            >
+              <div
+                className="text-[17px] sm:text-[20px] tracking-[0.15em]"
+                style={{
+                  fontFamily: "Georgia, serif",
+                }}
+              >
+                24 NOVEMBER 2026
+              </div>
 
+              <div
+                className="mt-2 text-[8px] sm:text-[9px] tracking-[0.28em] uppercase"
+                style={{
+                  color: "#a17a40",
+                }}
+              >
+                The Beginning Of Forever
+              </div>
+            </div>
+
+            {/* Bottom ornament */}
+            <div className="mt-6 flex justify-center">
+              <svg
+                width="95"
+                height="20"
+                viewBox="0 0 95 20"
+                fill="none"
+              >
+                <path
+                  d="M2 10H34C38 10 41 7 44 4C47 7 48 10 48 10C48 10 49 13 52 16C55 13 58 10 61 10H93"
+                  stroke="#a47b40"
+                  strokeWidth="0.8"
+                />
+                <circle
+                  cx="48"
+                  cy="10"
+                  r="2"
+                  fill="#a47b40"
+                />
+              </svg>
+            </div>
           </div>
-
         </div>
 
+        {/* --------------------------------
+            BOTTOM ROLL
+        -------------------------------- */}
+
+        <div
+          ref={bottomRollRef}
+          className="relative mx-auto h-[44px] sm:h-[48px] w-[88%] sm:w-[92%] z-20"
+        >
+          {/* Rod */}
+          <div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+            w-full h-[18px] sm:h-[20px] rounded-full"
+            style={{
+              background:
+                "linear-gradient(to bottom, #d9bd7b, #9a7135 45%, #e5c982 65%, #8d642f)",
+              boxShadow:
+                "0 5px 8px rgba(71,48,22,0.25), inset 0 1px 2px rgba(255,255,255,0.65)",
+            }}
+          />
+
+          {/* Left knob */}
+          <div
+            className="absolute left-[-9px] sm:left-[-12px] top-1/2 -translate-y-1/2
+            w-[22px] h-[22px] sm:w-[28px] sm:h-[28px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 35% 30%, #f1dc9c, #a47736 60%, #70491e)",
+              boxShadow: "0 3px 5px rgba(70,45,18,0.3)",
+            }}
+          />
+
+          {/* Right knob */}
+          <div
+            className="absolute right-[-9px] sm:right-[-12px] top-1/2 -translate-y-1/2
+            w-[22px] h-[22px] sm:w-[28px] sm:h-[28px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle at 35% 30%, #f1dc9c, #a47736 60%, #70491e)",
+              boxShadow: "0 3px 5px rgba(70,45,18,0.3)",
+            }}
+          />
+        </div>
       </div>
-
     </section>
-  );
-}
-
-
-/* ============================================================
-   LARGE FLORAL ORNAMENT
-============================================================ */
-
-function LargeFloral() {
-  return (
-    <svg
-      viewBox="0 0 600 130"
-      className="h-auto w-full"
-      fill="none"
-    >
-      <path
-        d="
-          M10 105
-          C45 98 42 70 70 73
-          C95 76 92 102 118 89
-          C145 75 142 40 170 45
-          C195 50 195 80 220 68
-          C240 58 245 28 260 25
-
-          M590 105
-          C555 98 558 70 530 73
-          C505 76 508 102 482 89
-          C455 75 458 40 430 45
-          C405 50 405 80 380 68
-          C360 58 355 28 340 25
-        "
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
-
-      {/* Center flower */}
-
-      <ellipse
-        cx="300"
-        cy="48"
-        rx="12"
-        ry="20"
-        stroke="currentColor"
-      />
-
-      <ellipse
-        cx="300"
-        cy="48"
-        rx="20"
-        ry="12"
-        stroke="currentColor"
-      />
-
-      <circle
-        cx="300"
-        cy="48"
-        r="4"
-        stroke="currentColor"
-      />
-
-      {/* left leaves */}
-
-      <path
-        d="
-          M170 45
-          C155 25 130 20 120 27
-          C133 42 151 48 170 45Z
-
-          M118 89
-          C98 68 75 68 66 78
-          C79 92 99 97 118 89Z
-        "
-        stroke="currentColor"
-        strokeWidth="1"
-      />
-
-      {/* right leaves */}
-
-      <path
-        d="
-          M430 45
-          C445 25 470 20 480 27
-          C467 42 449 48 430 45Z
-
-          M482 89
-          C502 68 525 68 534 78
-          C521 92 501 97 482 89Z
-        "
-        stroke="currentColor"
-        strokeWidth="1"
-      />
-
-      {/* tiny flowers */}
-
-      <circle cx="205" cy="62" r="3" stroke="currentColor" />
-      <circle cx="395" cy="62" r="3" stroke="currentColor" />
-
-      <circle cx="145" cy="77" r="2.5" stroke="currentColor" />
-      <circle cx="455" cy="77" r="2.5" stroke="currentColor" />
-
-    </svg>
-  );
-}
-
-
-/* ============================================================
-   CORNER FLOURISH
-============================================================ */
-
-function CornerFlourish() {
-  return (
-    <svg
-      viewBox="0 0 200 200"
-      className="h-full w-full"
-      fill="none"
-    >
-      <path
-        d="
-          M10 190
-          C10 120 20 65 70 25
-          C105 0 145 8 185 10
-
-          M30 190
-          C32 130 45 90 82 55
-          C112 27 145 25 180 28
-        "
-        stroke="currentColor"
-        strokeWidth="1.1"
-      />
-
-      <path
-        d="
-          M68 28
-          C60 12 45 7 36 12
-          C42 27 54 35 68 28Z
-
-          M84 54
-          C76 38 61 34 51 40
-          C58 54 70 61 84 54Z
-
-          M48 84
-          C35 72 20 73 15 82
-          C27 93 38 96 48 84Z
-        "
-        stroke="currentColor"
-        strokeWidth="1"
-      />
-
-      <circle
-        cx="68"
-        cy="28"
-        r="3"
-        stroke="currentColor"
-      />
-
-      <circle
-        cx="84"
-        cy="54"
-        r="2.5"
-        stroke="currentColor"
-      />
-
-    </svg>
-  );
-}
-
-
-/* ============================================================
-   SIDE FLORAL
-============================================================ */
-
-function SideFloral({ className, side }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 180 500"
-      fill="none"
-    >
-      <path
-        d="
-          M90 500
-          C80 430 105 385 78 330
-          C55 283 68 230 105 195
-          C130 172 125 130 92 100
-          C72 82 72 45 100 10
-        "
-        stroke="currentColor"
-        strokeWidth="1.2"
-      />
-
-      <path
-        d="
-          M78 330
-          C48 315 30 290 35 270
-          C58 273 76 293 78 330Z
-
-          M105 195
-          C135 183 153 162 149 143
-          C125 147 108 166 105 195Z
-
-          M92 100
-          C65 88 50 66 55 48
-          C78 55 91 75 92 100Z
-        "
-        stroke="currentColor"
-        strokeWidth="1"
-      />
-
-      <circle
-        cx="35"
-        cy="270"
-        r="4"
-        stroke="currentColor"
-      />
-
-      <circle
-        cx="149"
-        cy="143"
-        r="4"
-        stroke="currentColor"
-      />
-
-      <circle
-        cx="55"
-        cy="48"
-        r="4"
-        stroke="currentColor"
-      />
-    </svg>
-  );
+  )
 }
