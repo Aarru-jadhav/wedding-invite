@@ -17,6 +17,12 @@ export default function Hero() {
   const handleOpen = () => {
     if (opened) return;
 
+    // =========================================
+    // 🎵 START WEDDING MUSIC
+    // =========================================
+
+    window.dispatchEvent(new Event("weddingMusicStart"));
+
     setOpened(true);
 
     const tl = gsap.timeline();
@@ -29,69 +35,69 @@ export default function Hero() {
       opacity: 0,
       duration: 0.4,
       ease: "power2.out",
-    })
+    });
 
-      // =========================================
-      // 2. LEFT SIDE OPENS
-      // =========================================
+    // =========================================
+    // 2. LEFT SIDE OPENS
+    // =========================================
 
-      .to(
-        leftPanel.current,
-        {
-          xPercent: -100,
-          duration: 3.5,
-          ease: "power3.inOut",
-        },
-        0.4
-      )
+    tl.to(
+      leftPanel.current,
+      {
+        xPercent: -100,
+        duration: 3.5,
+        ease: "power3.inOut",
+      },
+      0.4
+    );
 
-      // =========================================
-      // 3. RIGHT SIDE OPENS
-      // =========================================
+    // =========================================
+    // 3. RIGHT SIDE OPENS
+    // =========================================
 
-      .to(
-        rightPanel.current,
-        {
-          xPercent: 100,
-          duration: 3.5,
-          ease: "power3.inOut",
-        },
-        "<"
-      )
+    tl.to(
+      rightPanel.current,
+      {
+        xPercent: 100,
+        duration: 3.5,
+        ease: "power3.inOut",
+      },
+      "<"
+    );
 
-      // =========================================
-      // 4. GIF REVEAL
-      // =========================================
+    // =========================================
+    // 4. GIF REVEAL
+    // =========================================
 
-      .to(
-        gifSection.current,
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 1.5,
-          ease: "power2.out",
-        },
-        "-=0.3"
-      )
+    tl.to(
+      gifSection.current,
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 1.5,
+        ease: "power2.out",
+      },
+      "-=0.3"
+    );
 
-      // =========================================
-      // 5. TEXT REVEAL
-      // =========================================
+    // =========================================
+    // 5. TEXT REVEAL
+    // =========================================
 
-      .fromTo(
-        weddingContent.current,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.5,
-          ease: "power3.out",
-        },
-        "-=0.8"
-      );
+    tl.fromTo(
+      weddingContent.current,
+      {
+        opacity: 0,
+        y: 30,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: "power3.out",
+      },
+      "-=0.8"
+    );
   };
 
   return (
@@ -121,7 +127,6 @@ export default function Hero() {
           "
         />
       </div>
-
 
       {/* =====================================================
           WEDDING TEXT
@@ -157,7 +162,6 @@ export default function Hero() {
             <span className="h-px w-14 bg-[#8d6a3e]/50" />
           </div>
 
-
           {/* INTRO */}
 
           <p
@@ -171,7 +175,6 @@ export default function Hero() {
           >
             Mark your Calendars to rejoice in the Wedding of
           </p>
-
 
           {/* NAME 1 */}
 
@@ -188,7 +191,6 @@ export default function Hero() {
             MANAV PARIDHI
           </h1>
 
-
           {/* & */}
 
           <div
@@ -202,7 +204,6 @@ export default function Hero() {
           >
             &
           </div>
-
 
           {/* NAME 2 */}
 
@@ -218,7 +219,6 @@ export default function Hero() {
           >
             RAAG PRANVI
           </h2>
-
 
           {/* SCROLL */}
 
@@ -242,7 +242,6 @@ export default function Hero() {
 
         </div>
       </div>
-
 
       {/* =====================================================
           LEFT DOOR
@@ -275,7 +274,6 @@ export default function Hero() {
         />
       </div>
 
-
       {/* =====================================================
           RIGHT DOOR
       ===================================================== */}
@@ -307,10 +305,8 @@ export default function Hero() {
         />
       </div>
 
-
       {/* =====================================================
           INVISIBLE TAP AREA
-          IMAGE KE ANDAR KA TAP TO OPEN HI DIKHEGA
       ===================================================== */}
 
       {!opened && (
