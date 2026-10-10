@@ -1,4 +1,4 @@
-```jsx
+
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,22 +11,19 @@ function BotanicalBranch({ className = "" }) {
     <div className={`sd-branch ${className}`}>
       <div className="sd-stem" />
 
-      {Array.from({ length: 9 }).map((_, i) => (
-        <span
-          key={i}
-          className={`sd-leaf sd-leaf-${i + 1}`}
-        />
+      {Array.from({ length: 9 }, (_, i) => (
+        <span key={i} className={`sd-leaf sd-leaf-${i + 1}`} />
       ))}
 
       <div className="sd-blossom sd-blossom-one">
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 5 }, (_, i) => (
           <span key={i} className={`sd-petal sd-petal-${i + 1}`} />
         ))}
         <span className="sd-flower-center" />
       </div>
 
       <div className="sd-blossom sd-blossom-two">
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 5 }, (_, i) => (
           <span key={i} className={`sd-petal sd-petal-${i + 1}`} />
         ))}
         <span className="sd-flower-center" />
@@ -42,7 +39,7 @@ function MarbleArtwork() {
       <div className="sd-marble-wash sd-wash-two" />
       <div className="sd-marble-wash sd-wash-three" />
 
-      {Array.from({ length: 8 }).map((_, i) => (
+      {Array.from({ length: 8 }, (_, i) => (
         <span key={i} className={`sd-vein sd-vein-${i + 1}`} />
       ))}
 
@@ -50,7 +47,7 @@ function MarbleArtwork() {
       <BotanicalBranch className="sd-branch-bottom" />
 
       <div className="sd-art-dust">
-        {Array.from({ length: 28 }).map((_, i) => (
+        {Array.from({ length: 28 }, (_, i) => (
           <span key={i} className={`sd-dust sd-dust-${i + 1}`} />
         ))}
       </div>
@@ -63,7 +60,6 @@ function MarbleArtwork() {
 export default function Savethedate() {
   const sectionRef = useRef(null);
 
-  // November 2026 starts on Sunday and has 30 days.
   const days = Array.from({ length: 30 }, (_, i) => i + 1);
 
   useLayoutEffect(() => {
@@ -83,66 +79,50 @@ export default function Savethedate() {
           duration: 1.2,
           ease: "power2.out",
         })
-        .from(
-          ".sd-eyebrow",
-          { opacity: 0, y: 12, duration: 0.6 },
-          "-=0.5"
-        )
-        .from(
-          ".sd-top-decoration",
-          { opacity: 0, scaleX: 0, duration: 0.6 },
-          "-=0.2"
-        )
-        .from(
-          ".sd-save",
-          {
-            opacity: 0,
-            y: 35,
-            duration: 0.9,
-            ease: "power3.out",
-          },
-          "-=0.1"
-        )
-        .from(
-          ".sd-the",
-          {
-            opacity: 0,
-            y: 20,
-            duration: 0.8,
-            ease: "power2.out",
-          },
-          "-=0.45"
-        )
-        .from(
-          ".sd-date",
-          {
-            opacity: 0,
-            y: 30,
-            duration: 0.9,
-            ease: "power3.out",
-          },
-          "-=0.4"
-        )
-        .from(
-          ".sd-calendar-heading",
-          { opacity: 0, y: 15, duration: 0.7 },
-          "-=0.2"
-        )
-        .from(
-          ".sd-weekday, .sd-day",
-          {
-            opacity: 0,
-            y: 7,
-            duration: 0.3,
-            stagger: 0.025,
-          },
-          "-=0.15"
-        )
-        .from(
-          ".sd-footer",
-          { opacity: 0, y: 12, duration: 0.7 },
-          "-=0.1"
-        );
+        .from(".sd-eyebrow", {
+          opacity: 0,
+          y: 12,
+          duration: 0.6,
+        })
+        .from(".sd-top-decoration", {
+          opacity: 0,
+          scaleX: 0,
+          duration: 0.6,
+        })
+        .from(".sd-save", {
+          opacity: 0,
+          y: 35,
+          duration: 0.9,
+          ease: "power3.out",
+        })
+        .from(".sd-the", {
+          opacity: 0,
+          y: 20,
+          duration: 0.8,
+          ease: "power2.out",
+        })
+        .from(".sd-date", {
+          opacity: 0,
+          y: 30,
+          duration: 0.9,
+          ease: "power3.out",
+        })
+        .from(".sd-calendar-heading", {
+          opacity: 0,
+          y: 15,
+          duration: 0.7,
+        })
+        .from(".sd-weekday, .sd-day", {
+          opacity: 0,
+          y: 7,
+          duration: 0.3,
+          stagger: 0.025,
+        })
+        .from(".sd-footer", {
+          opacity: 0,
+          y: 12,
+          duration: 0.7,
+        });
 
       gsap.to(".sd-vein", {
         opacity: 0.9,
@@ -226,22 +206,16 @@ export default function Savethedate() {
 
         <div className="sd-calendar">
           <div className="sd-weekdays">
-            {["S", "M", "T", "W", "T", "F", "S"].map(
-              (day, i) => (
-                <span key={i} className="sd-weekday">
-                  {day}
-                </span>
-              )
-            )}
+            {["S", "M", "T", "W", "T", "F", "S"].map((day, i) => (
+              <span key={i} className="sd-weekday">{day}</span>
+            ))}
           </div>
 
           <div className="sd-calendar-grid">
             {days.map((day) => (
               <div
                 key={day}
-                className={`sd-day ${
-                  day === 24 ? "sd-selected" : ""
-                }`}
+                className={`sd-day ${day === 24 ? "sd-selected" : ""}`}
               >
                 {day === 24 ? (
                   <span className="sd-date-heart">
@@ -264,4 +238,3 @@ export default function Savethedate() {
     </section>
   );
 }
-```
