@@ -6,6 +6,7 @@ import Story from "./Sections/Story";
 import Event from "./Sections/Event";
 import Savethedate from "./Sections/Savethedate";
 import Location from "./Sections/Location";
+import Joinus from "./Sections/Joinus";
 
 import weddingMusic from "./assets/music/wedding-music.mp3";
 
@@ -94,6 +95,7 @@ function App() {
           <Event />
           <Savethedate />
           <Location />
+          <Joinus />
         </>
       )}
 

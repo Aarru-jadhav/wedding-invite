@@ -197,7 +197,7 @@ export default function Hero() {
           </p>
 
           <h1 className="font-serif text-5xl font-medium tracking-[0.06em] md:text-7xl lg:text-8xl">
-            MANAV PARIDHI
+            Siddharth vaishnav 
           </h1>
 
           <div className="my-3 font-serif text-4xl text-[#80633c] md:text-5xl">
@@ -205,11 +205,11 @@ export default function Hero() {
           </div>
 
           <h2 className="font-serif text-5xl font-medium tracking-[0.06em] md:text-7xl lg:text-8xl">
-            RAAG PRANVI
+            shreshi parashar 
           </h2>
 
           <div className="mt-14">
-            <p className="text-[10px] uppercase tracking-[0.4em] text-[#705a3c] md:text-xs">
+            <p className="text-[15px] uppercase tracking-[0.4em] text-[#b48139] md:text-xs">
               Scroll
             </p>
             <div className="mt-2 text-lg text-[#705a3c]">↓</div>

@@ -165,7 +165,7 @@ export default function Story() {
                 md:text-3xl
               "
             >
-              MANAV & RAAG PRANVI
+              shreshi & siddharth
             </p>
 
           </div>

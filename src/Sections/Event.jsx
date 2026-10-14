@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,38 +8,31 @@ gsap.registerPlugin(ScrollTrigger);
 const events = [
   {
     number: "I",
-    title: "HALDI",
-    date: "DATE TO BE UPDATED",
-    time: "TIME TO BE UPDATED",
-    venue: "Boho Farms & Retreat",
+    title: "GANESH PUJA",
+    date: "21st NOVEMBER 2026",
+    time: "10 AM",
+    venue: "",
   },
   {
     number: "II",
-    title: "MEHENDI",
-    date: "DATE TO BE UPDATED",
-    time: "TIME TO BE UPDATED",
-    venue: "Boho Farms & Retreat",
+    title: "HALDI",
+    date: "23rd NOVEMBER 2026",
+    time: "2.30 PM",
+    venue: "",
   },
   {
     number: "III",
-    title: "SANGEET",
-    date: "DATE TO BE UPDATED",
-    time: "TIME TO BE UPDATED",
-    venue: "Boho Farms & Retreat",
+    title: "MEHNDI",
+    date: "23rd NOVEMBER 2026",
+    time: "7 PM",
+    venue: "",
   },
   {
     number: "IV",
     title: "WEDDING",
     date: "24 NOVEMBER 2026",
-    time: "TIME TO BE UPDATED",
-    venue: "Boho Farms & Retreat",
-  },
-  {
-    number: "V",
-    title: "RECEPTION",
-    date: "DATE TO BE UPDATED",
-    time: "TIME TO BE UPDATED",
-    venue: "Boho Farms & Retreat",
+    time: "9.30 AM",
+    venue: "",
   },
 ];
 
@@ -51,10 +45,7 @@ export default function Events() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      /* ==========================================
-         CENTER LINE
-      ========================================== */
-
+      // CENTER LINE ANIMATION
       gsap.fromTo(
         lineRef.current,
         {
@@ -73,12 +64,11 @@ export default function Events() {
         }
       );
 
-      /* ==========================================
-         MOVING GOLD ORNAMENT
-      ========================================== */
-
+      // MOVING GOLD ORNAMENT
       gsap.to(ornamentRef.current, {
-        y: () => timelineRef.current.offsetHeight - 90,
+        y: () =>
+          timelineRef.current.offsetHeight -
+          (window.innerWidth >= 768 ? 100 : 80),
         rotate: 360,
         ease: "none",
         scrollTrigger: {
@@ -86,28 +76,25 @@ export default function Events() {
           start: "top 65%",
           end: "bottom 65%",
           scrub: 1,
+          invalidateOnRefresh: true,
         },
       });
 
-      /* ==========================================
-         EVENT REVEALS
-      ========================================== */
-
-      eventRefs.current.forEach((item, index) => {
+      // EVENT CARD REVEALS: FADE + UP ONLY
+      eventRefs.current.forEach((item) => {
         if (!item) return;
 
         const content = item.querySelector(".event-card");
+        if (!content) return;
 
         gsap.fromTo(
           content,
           {
             opacity: 0,
-            x: index % 2 === 0 ? -70 : 70,
             y: 25,
           },
           {
             opacity: 1,
-            x: 0,
             y: 0,
             duration: 1.1,
             ease: "power3.out",
@@ -130,21 +117,17 @@ export default function Events() {
       className="
         relative
         w-full
-        overflow-hidden
+        overflow-x-clip
+        overflow-y-hidden
         bg-[#21090e]
         py-28
         text-[#f5ead7]
         md:py-36
       "
     >
-      {/* =================================================
-          LUXURY BACKGROUND
-      ================================================= */}
-
+      {/* LUXURY BACKGROUND */}
       <div className="pointer-events-none absolute inset-0">
-
         {/* Center glow */}
-
         <div
           className="
             absolute
@@ -160,7 +143,6 @@ export default function Events() {
         />
 
         {/* Gold ambient light */}
-
         <div
           className="
             absolute
@@ -169,13 +151,12 @@ export default function Events() {
             h-[300px]
             w-[300px]
             rounded-full
-            bg-[#c49a52]/8
+            bg-[#c49a52]/[0.08]
             blur-[100px]
           "
         />
 
         {/* Fine texture */}
-
         <div
           className="
             absolute
@@ -187,7 +168,6 @@ export default function Events() {
         />
 
         {/* Top vignette */}
-
         <div
           className="
             absolute
@@ -201,7 +181,6 @@ export default function Events() {
         />
 
         {/* Bottom vignette */}
-
         <div
           className="
             absolute
@@ -213,13 +192,9 @@ export default function Events() {
             to-transparent
           "
         />
-
       </div>
 
-      {/* =================================================
-          DECORATIVE CORNERS
-      ================================================= */}
-
+      {/* DECORATIVE CORNERS */}
       <div
         className="
           pointer-events-none
@@ -292,30 +267,21 @@ export default function Events() {
         "
       />
 
-      {/* =================================================
-          HEADER
-      ================================================= */}
-
+      {/* HEADER */}
       <div className="relative z-10 mx-auto max-w-6xl px-5 text-center">
-
         <div className="mb-7 flex items-center justify-center gap-4">
-
           <span className="h-px w-14 bg-[#c9a45c]/50 md:w-24" />
-
-          <span className="text-xl text-[#d2ad64]">
-            ❦
-          </span>
-
+          <span className="text-xl text-[#d2ad64]">❦</span>
           <span className="h-px w-14 bg-[#c9a45c]/50 md:w-24" />
-
         </div>
 
         <p
           className="
             text-[9px]
             uppercase
-            tracking-[0.55em]
+            tracking-[0.35em]
             text-[#d0ac67]
+            sm:tracking-[0.55em]
             md:text-xs
           "
         >
@@ -326,9 +292,9 @@ export default function Events() {
           className="
             mt-5
             font-serif
-            text-5xl
+            text-4xl
             font-light
-            tracking-[0.04em]
+            tracking-[0.02em]
             text-[#f7ead4]
             sm:text-6xl
             md:text-8xl
@@ -353,13 +319,9 @@ export default function Events() {
           Join us as we celebrate every beautiful
           chapter leading to our forever.
         </p>
-
       </div>
 
-      {/* =================================================
-          TIMELINE
-      ================================================= */}
-
+      {/* TIMELINE */}
       <div
         ref={timelineRef}
         className="
@@ -368,14 +330,13 @@ export default function Events() {
           mx-auto
           mt-20
           max-w-6xl
-          px-4
+          px-2
+          sm:px-4
           md:mt-28
           md:px-8
         "
       >
-
         {/* CENTER LINE */}
-
         <div
           ref={lineRef}
           className="
@@ -394,7 +355,6 @@ export default function Events() {
         />
 
         {/* MOVING ORNAMENT */}
-
         <div
           ref={ornamentRef}
           className="
@@ -443,9 +403,7 @@ export default function Events() {
         </div>
 
         {/* EVENTS */}
-
         <div className="relative">
-
           {events.map((event, index) => {
             const isLeft = index % 2 === 0;
 
@@ -463,11 +421,7 @@ export default function Events() {
                   md:min-h-[270px]
                 "
               >
-
-                {/* ======================================
-                    LEFT
-                ====================================== */}
-
+                {/* LEFT COLUMN */}
                 <div
                   className={`
                     flex
@@ -475,22 +429,15 @@ export default function Events() {
                     items-center
                     ${
                       isLeft
-                        ? "justify-end pr-7 text-right md:pr-20"
-                        : "justify-end pr-7 md:pr-20"
+                        ? "justify-end pr-3 text-right sm:pr-7 md:pr-20"
+                        : "justify-end pr-3 sm:pr-7 md:pr-20"
                     }
                   `}
                 >
-
-                  {isLeft && (
-                    <EventCard event={event} />
-                  )}
-
+                  {isLeft && <EventCard event={event} />}
                 </div>
 
-                {/* ======================================
-                    RIGHT
-                ====================================== */}
-
+                {/* RIGHT COLUMN */}
                 <div
                   className={`
                     flex
@@ -498,20 +445,15 @@ export default function Events() {
                     items-center
                     ${
                       !isLeft
-                        ? "justify-start pl-7 text-left md:pl-20"
-                        : "justify-start pl-7 md:pl-20"
+                        ? "justify-start pl-3 text-left sm:pl-7 md:pl-20"
+                        : "justify-start pl-3 sm:pl-7 md:pl-20"
                     }
                   `}
                 >
-
-                  {!isLeft && (
-                    <EventCard event={event} />
-                  )}
-
+                  {!isLeft && <EventCard event={event} />}
                 </div>
 
                 {/* CENTER JEWEL */}
-
                 <div
                   className="
                     absolute
@@ -538,31 +480,18 @@ export default function Events() {
                     <div className="h-2 w-2 bg-[#c9a45c]" />
                   </div>
                 </div>
-
               </div>
             );
           })}
-
         </div>
-
       </div>
 
-      {/* =================================================
-          BOTTOM
-      ================================================= */}
-
+      {/* BOTTOM */}
       <div className="relative z-10 mt-16 px-5 text-center md:mt-20">
-
         <div className="mb-7 flex items-center justify-center gap-4">
-
           <span className="h-px w-12 bg-[#c9a45c]/40" />
-
-          <span className="text-lg text-[#d0aa5e]">
-            ❦
-          </span>
-
+          <span className="text-lg text-[#d0aa5e]">❦</span>
           <span className="h-px w-12 bg-[#c9a45c]/40" />
-
         </div>
 
         <p
@@ -576,18 +505,12 @@ export default function Events() {
         >
           Every celebration is a chapter of our story.
         </p>
-
       </div>
-
     </section>
   );
 }
 
-
-/* ======================================================
-   EVENT CARD
-====================================================== */
-
+/* EVENT CARD */
 function EventCard({ event }) {
   return (
     <div
@@ -595,18 +518,18 @@ function EventCard({ event }) {
         event-card
         relative
         w-full
+        min-w-0
         max-w-[155px]
         py-5
         md:max-w-[330px]
         md:py-7
       "
     >
-
-      {/* Gold vertical accent */}
-
+      {/* GOLD VERTICAL ACCENT */}
       <div
         className="
           absolute
+          left-0
           top-0
           h-full
           w-px
@@ -618,11 +541,8 @@ function EventCard({ event }) {
       />
 
       {/* CONTENT */}
-
-      <div className="relative px-4 md:px-7">
-
-        {/* Roman number */}
-
+      <div className="relative min-w-0 px-2 sm:px-4 md:px-7">
+        {/* ROMAN NUMBER */}
         <p
           className="
             mb-2
@@ -636,15 +556,17 @@ function EventCard({ event }) {
           {event.number}
         </p>
 
-        {/* Date */}
-
+        {/* DATE */}
         <p
           className="
-            whitespace-nowrap
+            break-words
             text-[7px]
             uppercase
-            tracking-[0.15em]
+            leading-relaxed
+            tracking-[0.08em]
             text-[#bfae91]
+            sm:text-[8px]
+            sm:tracking-[0.12em]
             md:text-[9px]
             md:tracking-[0.3em]
           "
@@ -652,38 +574,33 @@ function EventCard({ event }) {
           {event.date}
         </p>
 
-        {/* Title */}
-
+        {/* TITLE */}
         <h3
           className="
             mt-2
-            whitespace-nowrap
+            break-words
             font-serif
-            text-[25px]
+            text-[clamp(15px,4vw,22px)]
             font-light
-            tracking-[0.08em]
+            leading-tight
+            tracking-[0.01em]
             text-[#f5e8d4]
-            sm:text-[28px]
+            sm:text-2xl
+            sm:tracking-[0.04em]
             md:text-5xl
+            md:tracking-[0.08em]
           "
         >
           {event.title}
         </h3>
 
-        {/* Ornament */}
-
+        {/* ORNAMENT */}
         <div className="my-3 flex items-center gap-2 md:my-4">
-
           <span className="h-px w-6 bg-[#c9a45c]/50 md:w-10" />
-
-          <span className="text-[9px] text-[#d0aa5e]">
-            ✦
-          </span>
-
+          <span className="text-[9px] text-[#d0aa5e]">✦</span>
         </div>
 
-        {/* Time */}
-
+        {/* TIME */}
         <p
           className="
             font-serif
@@ -696,26 +613,25 @@ function EventCard({ event }) {
           {event.time}
         </p>
 
-        {/* Venue */}
-
-        <p
-          className="
-            mt-1
-            max-w-[140px]
-            text-[7px]
-            uppercase
-            tracking-[0.12em]
-            text-[#a9987d]
-            md:max-w-none
-            md:text-[9px]
-            md:tracking-[0.2em]
-          "
-        >
-          {event.venue}
-        </p>
-
+        {/* VENUE - renders only when provided */}
+        {event.venue && (
+          <p
+            className="
+              mt-1
+              max-w-full
+              break-words
+              text-[7px]
+              uppercase
+              tracking-[0.08em]
+              text-[#a9987d]
+              md:text-[9px]
+              md:tracking-[0.2em]
+            "
+          >
+            {event.venue}
+          </p>
+        )}
       </div>
-
     </div>
   );
 }
