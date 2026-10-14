@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 
@@ -11,6 +10,8 @@ export default function Hero() {
 
   const leftPanel = useRef(null);
   const rightPanel = useRef(null);
+  const leftCurtain = useRef(null);
+  const rightCurtain = useRef(null);
   const button = useRef(null);
   const background = useRef(null);
   const weddingContent = useRef(null);
@@ -57,24 +58,45 @@ export default function Hero() {
       ease: "power2.out",
     });
 
-    // Open left door
+    // 1. Open left door
     tl.to(
       leftPanel.current,
       {
         xPercent: -100,
-        duration: 3.5,
+        duration: 3.2,
         ease: "power3.inOut",
       },
       0.4
     );
 
-    // Open right door
+    // 2. Open right door
     tl.to(
       rightPanel.current,
       {
         xPercent: 100,
-        duration: 3.5,
+        duration: 3.2,
         ease: "power3.inOut",
+      },
+      "<"
+    );
+
+    // 3. Open Golden Silk Curtains smoothly with slight lag (parda effect)
+    tl.to(
+      leftCurtain.current,
+      {
+        xPercent: -105,
+        duration: 2.8,
+        ease: "power2.inOut",
+      },
+      0.6
+    );
+
+    tl.to(
+      rightCurtain.current,
+      {
+        xPercent: 105,
+        duration: 2.8,
+        ease: "power2.inOut",
       },
       "<"
     );
@@ -105,7 +127,7 @@ export default function Hero() {
         }
       },
       [],
-      "-=0.2"
+      "-=1.0"
     );
 
     // Reveal background
@@ -117,7 +139,7 @@ export default function Hero() {
         duration: 1.2,
         ease: "power2.out",
       },
-      "-=0.1"
+      "-=0.8"
     );
 
     // Reveal names
@@ -141,12 +163,11 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden bg-[#190505]">
 
-      {/* BACKGROUND */}
+      {/* BACKGROUND (Video & Poster) */}
       <div
         ref={background}
         className="absolute inset-0 z-0 scale-[1.03] opacity-0"
       >
-        {/* POSTER: visible while video loads */}
         <img
           src={openingImage}
           alt=""
@@ -157,7 +178,6 @@ export default function Hero() {
           }}
         />
 
-        {/* VIDEO */}
         <video
           ref={videoRef}
           src={weddingVideo}
@@ -179,13 +199,12 @@ export default function Hero() {
         />
       </div>
 
-      {/* WEDDING TEXT */}
+      {/* WEDDING TEXT CONTENT */}
       <div
         ref={weddingContent}
         className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-6 text-center text-[#49351f] opacity-0"
       >
         <div className="w-full max-w-5xl">
-
           <div className="mb-7 flex items-center justify-center gap-5">
             <span className="h-px w-14 bg-[#8d6a3e]/50" />
             <span className="text-xl text-[#8d6a3e]">❦</span>
@@ -197,7 +216,7 @@ export default function Hero() {
           </p>
 
           <h1 className="font-serif text-5xl font-medium tracking-[0.06em] md:text-7xl lg:text-8xl">
-            Siddharth vaishnav 
+            Siddharth vaishnav
           </h1>
 
           <div className="my-3 font-serif text-4xl text-[#80633c] md:text-5xl">
@@ -205,7 +224,7 @@ export default function Hero() {
           </div>
 
           <h2 className="font-serif text-5xl font-medium tracking-[0.06em] md:text-7xl lg:text-8xl">
-            shreshi parashar 
+            shreshi parashar
           </h2>
 
           <div className="mt-14">
@@ -214,7 +233,27 @@ export default function Hero() {
             </p>
             <div className="mt-2 text-lg text-[#705a3c]">↓</div>
           </div>
+        </div>
+      </div>
 
+      {/* GOLDEN SILK CURTAINS (Behind Door, Ahead of Content) */}
+      <div className="pointer-events-none absolute inset-0 z-40 flex">
+        {/* Left Golden Silk Panel */}
+        <div
+          ref={leftCurtain}
+          className="relative h-full w-1/2 overflow-hidden bg-gradient-to-r from-[#8B6508] via-[#D4AF37] to-[#B8860B] shadow-[inset_-20px_0_40px_rgba(0,0,0,0.5)]"
+        >
+          {/* Silk Pleats Texture */}
+          <div className="absolute inset-0 opacity-30 bg-[repeating-linear-gradient(90deg,transparent,transparent_20px,rgba(0,0,0,0.35)_25px,rgba(255,255,255,0.4)_30px)]" />
+        </div>
+
+        {/* Right Golden Silk Panel */}
+        <div
+          ref={rightCurtain}
+          className="relative h-full w-1/2 overflow-hidden bg-gradient-to-l from-[#8B6508] via-[#D4AF37] to-[#B8860B] shadow-[inset_20px_0_40px_rgba(0,0,0,0.5)]"
+        >
+          {/* Silk Pleats Texture */}
+          <div className="absolute inset-0 opacity-30 bg-[repeating-linear-gradient(90deg,transparent,transparent_20px,rgba(0,0,0,0.35)_25px,rgba(255,255,255,0.4)_30px)]" />
         </div>
       </div>
 
