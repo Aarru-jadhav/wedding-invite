@@ -556,19 +556,19 @@ function EventCard({ event }) {
           {event.number}
         </p>
 
-        {/* DATE */}
+        {/* DATE — INCREASED SIZE */}
         <p
           className="
             break-words
-            text-[7px]
+            text-[10px]
             uppercase
             leading-relaxed
             tracking-[0.08em]
             text-[#bfae91]
-            sm:text-[8px]
+            sm:text-xs
             sm:tracking-[0.12em]
-            md:text-[9px]
-            md:tracking-[0.3em]
+            md:text-sm
+            md:tracking-[0.2em]
           "
         >
           {event.date}
@@ -613,7 +613,7 @@ function EventCard({ event }) {
           {event.time}
         </p>
 
-        {/* VENUE - renders only when provided */}
+        {/* VENUE */}
         {event.venue && (
           <p
             className="

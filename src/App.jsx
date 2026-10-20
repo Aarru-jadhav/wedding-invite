@@ -8,7 +8,7 @@ import Savethedate from "./Sections/Savethedate";
 import Location from "./Sections/Location";
 import Joinus from "./Sections/Joinus";
 
-import weddingMusic from "./assets/music/wedding-music.mp3";
+// import weddingMusic from "./assets/music/wedding-music.mp3";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -65,12 +65,12 @@ function App() {
           WEDDING MUSIC
       -------------------------------- */}
 
-      <audio
+      {/* <audio
         ref={audioRef}
         src={weddingMusic}
         loop
         preload="auto"
-      />
+      /> */}
 
       {/* --------------------------------
           LOADER

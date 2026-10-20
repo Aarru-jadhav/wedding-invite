@@ -1,0 +1,368 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&family=Allura&display=swap');
+
+.sd-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 45px 0;
+  background: #fffdf9;
+  isolation: isolate;
+}
+
+.sd-floral {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: left center;
+  transform-origin: left center;
+}
+
+.sd-watercolor-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 249, 248, 0.08) 28%,
+    rgba(255, 253, 249, 0.65) 48%,
+    rgba(255, 253, 249, 0.97) 75%,
+    #fffdf9 100%
+  );
+  opacity: 0.55;
+}
+
+.sd-content {
+  position: relative;
+  width: 52%;
+  max-width: 580px;
+  box-sizing: border-box;
+  padding: 35px 25px;
+  margin-right: 3%;
+  text-align: center;
+  color: #55494b;
+}
+
+.sd-title {
+  margin-bottom: 25px;
+  padding-top: 10px;
+}
+
+.sd-save,
+.sd-date {
+  margin: 0;
+  font-family: "Allura", cursive;
+  font-weight: 400;
+  line-height: 0.95;
+  color: #5f5558;
+}
+
+.sd-save {
+  font-size: clamp(85px, 9vw, 125px);
+  transform: rotate(-4deg);
+}
+
+.sd-the {
+  margin: 8px 0 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 20px;
+  letter-spacing: 8px;
+}
+
+.sd-date {
+  position: relative;
+  margin-top: -2px;
+  font-size: clamp(105px, 11vw, 150px);
+  transform: rotate(-3deg);
+}
+
+.sd-details {
+  font-family: "Cormorant Garamond", serif;
+  letter-spacing: 4px;
+}
+
+.sd-day,
+.sd-month,
+.sd-year,
+.sd-venue,
+.sd-state,
+.sd-names,
+.sd-wedding-label,
+.sd-invitation {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.sd-day {
+  margin-top: 18px;
+  margin-bottom: 0;
+  font-size: 15px;
+  letter-spacing: 5px;
+}
+
+.sd-month {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 18px;
+  letter-spacing: 5px;
+}
+
+.sd-year {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 16px;
+  letter-spacing: 6px;
+}
+
+.sd-divider {
+  display: block;
+  margin: 18px 0;
+  color: #9e777c;
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+.sd-wedding-label {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 19px;
+  font-style: italic;
+  letter-spacing: 4px;
+}
+
+.sd-names {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 3px;
+}
+
+.sd-venue {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: 5px;
+}
+
+.sd-state {
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 16px;
+  font-style: italic;
+  letter-spacing: 4px;
+}
+
+.sd-invitation {
+  margin-top: 28px;
+  margin-bottom: 0;
+  font-family: "Allura", cursive;
+  font-size: 35px;
+  letter-spacing: 1px;
+  color: #958286;
+}
+
+.sd-particles {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.sd-particle {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #c98c9b;
+  opacity: 0.35;
+}
+
+.sd-particle-1 { top: 41%; left: 52%; width: 15px; height: 15px; }
+.sd-particle-2 { top: 45%; left: 58%; width: 8px; height: 8px; }
+.sd-particle-3 { top: 49%; left: 47%; width: 5px; height: 5px; }
+.sd-particle-4 { top: 53%; left: 61%; width: 7px; height: 7px; }
+.sd-particle-5 { top: 37%; left: 62%; width: 5px; height: 5px; }
+.sd-particle-6 { top: 58%; left: 50%; width: 6px; height: 6px; }
+.sd-particle-7 { top: 33%; left: 55%; width: 4px; height: 4px; }
+.sd-particle-8 { top: 61%; left: 58%; width: 5px; height: 5px; }
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .sd-section {
+    min-height: 850px;
+  }
+
+  .sd-floral {
+    background-size: auto 100%;
+    background-position: 25% center;
+  }
+
+  .sd-content {
+    width: 58%;
+    margin-right: 1%;
+    padding: 35px 15px;
+  }
+
+  .sd-save {
+    font-size: 100px;
+  }
+
+  .sd-date {
+    font-size: 120px;
+  }
+
+  .sd-watercolor-glow {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 253, 249, 0.02),
+      rgba(255, 253, 249, 0.55) 38%,
+      rgba(255, 253, 249, 0.96) 78%
+    );
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .sd-section {
+    min-height: 100svh;
+    padding: 35px 12px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sd-floral {
+    background-size: auto 82%;
+    background-position: left center;
+    opacity: 0.8;
+  }
+
+  .sd-watercolor-glow {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 253, 249, 0.22),
+      rgba(255, 253, 249, 0.72) 48%,
+      rgba(255, 253, 249, 0.92) 100%
+    );
+    opacity: 0.7;
+  }
+
+  .sd-content {
+    width: 100%;
+    max-width: 430px;
+    margin: 0;
+    padding: 35px 10px;
+  }
+
+  .sd-title {
+    margin-bottom: 22px;
+    padding-top: 8px;
+  }
+
+  .sd-save {
+    font-size: clamp(82px, 22vw, 110px);
+  }
+
+  .sd-the {
+    margin-top: 8px;
+    font-size: 17px;
+    letter-spacing: 7px;
+  }
+
+  .sd-date {
+    font-size: clamp(100px, 27vw, 130px);
+  }
+
+  .sd-day {
+    margin-top: 12px;
+    font-size: 13px;
+    letter-spacing: 4px;
+  }
+
+  .sd-month {
+    margin-top: 9px;
+    font-size: 16px;
+    letter-spacing: 4px;
+  }
+
+  .sd-year {
+    margin-top: 8px;
+    font-size: 15px;
+    letter-spacing: 5px;
+  }
+
+  .sd-divider {
+    margin: 15px 0;
+  }
+
+  .sd-wedding-label {
+    font-size: 18px;
+    letter-spacing: 3px;
+  }
+
+  .sd-names {
+    margin-top: 9px;
+    font-size: clamp(15px, 4vw, 18px);
+    letter-spacing: 2.5px;
+  }
+
+  .sd-venue {
+    font-size: 19px;
+    letter-spacing: 4px;
+  }
+
+  .sd-state {
+    margin-top: 7px;
+    font-size: 15px;
+    letter-spacing: 3px;
+  }
+
+  .sd-invitation {
+    margin-top: 22px;
+    font-size: 31px;
+  }
+}
+
+@media (max-width: 360px) {
+  .sd-content {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .sd-save {
+    font-size: 78px;
+  }
+
+  .sd-date {
+    font-size: 96px;
+  }
+
+  .sd-month {
+    font-size: 14px;
+    letter-spacing: 3px;
+  }
+
+  .sd-names {
+    font-size: 14px;
+    letter-spacing: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sd-watercolor-glow,
+  .sd-particle {
+    animation: none;
+  }
+}

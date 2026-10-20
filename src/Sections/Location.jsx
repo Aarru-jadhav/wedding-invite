@@ -178,15 +178,12 @@ export default function Location() {
             md:top-14
           "
         >
-          <div className="flex items-center justify-center gap-4">
+          {/* <div className="flex items-center justify-center gap-4">
             <span className="h-px w-10 bg-[#d5b36a]/70 md:w-16" />
 
-            <span className="text-lg text-[#d5b36a]">
-              ❦
-            </span>
-
+           
             <span className="h-px w-10 bg-[#d5b36a]/70 md:w-16" />
-          </div>
+          </div> */}
 
           <p
             className="
