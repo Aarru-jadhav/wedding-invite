@@ -9,7 +9,7 @@ const events = [
   {
     number: "I",
     title: "HALDI",
-    date: "2 NOVEMBER 2026",
+    date: "23 NOVEMBER 2026",
     time: "2:30 PM",
   },
   {
