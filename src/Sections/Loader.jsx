@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 
 const loadingTexts = [
   "A MOMENT TO REMEMBER",
-  "YOUR STORY BEGINS",
+  "A ROYAL CELEBRATION",
   "PREPARE FOR THE INVITATION",
 ];
 

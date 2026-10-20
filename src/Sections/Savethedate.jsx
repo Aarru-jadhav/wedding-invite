@@ -1,4 +1,3 @@
-
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -24,23 +23,22 @@ function BotanicalVine({ side = "left" }) {
         d="M14 438 C42 390 13 348 38 300 C61 257 23 216 49 173 C72 135 45 86 87 15"
       />
 
-      <path className="sd-vine-stem" d="M28 375 C7 360 4 340 14 327 C33 338 37 356 28 375Z" />
-      <path className="sd-vine-stem" d="M31 339 C54 339 70 322 65 307 C46 309 34 322 31 339Z" />
-      <path className="sd-vine-stem" d="M34 285 C12 270 10 251 20 239 C40 250 44 269 34 285Z" />
-      <path className="sd-vine-stem" d="M44 245 C68 242 79 225 72 211 C53 216 43 229 44 245Z" />
-      <path className="sd-vine-stem" d="M43 201 C23 186 23 168 33 158 C50 172 53 189 43 201Z" />
-      <path className="sd-vine-stem" d="M53 161 C76 156 84 139 76 127 C58 133 51 146 53 161Z" />
-      <path className="sd-vine-stem" d="M63 116 C43 102 42 84 53 74 C69 88 73 103 63 116Z" />
-      <path className="sd-vine-stem" d="M74 78 C96 72 102 56 94 45 C78 52 72 65 74 78Z" />
-
-      <path className="sd-vine-leaf" d="M28 375 C7 360 4 340 14 327 C33 338 37 356 28 375Z" />
-      <path className="sd-vine-leaf" d="M31 339 C54 339 70 322 65 307 C46 309 34 322 31 339Z" />
-      <path className="sd-vine-leaf" d="M34 285 C12 270 10 251 20 239 C40 250 44 269 34 285Z" />
-      <path className="sd-vine-leaf" d="M44 245 C68 242 79 225 72 211 C53 216 43 229 44 245Z" />
-      <path className="sd-vine-leaf" d="M43 201 C23 186 23 168 33 158 C50 172 53 189 43 201Z" />
-      <path className="sd-vine-leaf" d="M53 161 C76 156 84 139 76 127 C58 133 51 146 53 161Z" />
-      <path className="sd-vine-leaf" d="M63 116 C43 102 42 84 53 74 C69 88 73 103 63 116Z" />
-      <path className="sd-vine-leaf" d="M74 78 C96 72 102 56 94 45 C78 52 72 65 74 78Z" />
+      {[
+        "M28 375 C7 360 4 340 14 327 C33 338 37 356 28 375Z",
+        "M31 339 C54 339 70 322 65 307 C46 309 34 322 31 339Z",
+        "M34 285 C12 270 10 251 20 239 C40 250 44 269 34 285Z",
+        "M44 245 C68 242 79 225 72 211 C53 216 43 229 44 245Z",
+        "M43 201 C23 186 23 168 33 158 C50 172 53 189 43 201Z",
+        "M53 161 C76 156 84 139 76 127 C58 133 51 146 53 161Z",
+        "M63 116 C43 102 42 84 53 74 C69 88 73 103 63 116Z",
+        "M74 78 C96 72 102 56 94 45 C78 52 72 65 74 78Z",
+      ].map((path, index) => (
+        <path
+          key={index}
+          className="sd-vine-leaf"
+          d={path}
+        />
+      ))}
 
       <circle className="sd-vine-dot" cx="87" cy="15" r="2.2" />
       <circle className="sd-vine-dot" cx="14" cy="327" r="1.8" />
@@ -49,19 +47,42 @@ function BotanicalVine({ side = "left" }) {
   );
 }
 
+function CornerOrnament({ corner }) {
+  return (
+    <div
+      className={`sd-frame-ornament sd-frame-${corner}`}
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 48 48">
+        <path d="M2 24 V2 H24" />
+        <path d="M7 17 V7 H17" />
+        <path d="M2 11 C8 11 11 8 11 2" />
+        <path d="M12 24 C17 18 22 15 28 14" />
+        <path d="M22 3 C22 9 27 13 33 13" />
+        <path d="M4 30 C11 29 15 33 16 40" />
+        <path d="M27 7 C32 8 36 12 37 17" />
+      </svg>
+    </div>
+  );
+}
+
 export default function Savethedate() {
   const sectionRef = useRef(null);
   const heartRef = useRef(null);
   const calendarRef = useRef(null);
   const dateHeartRef = useRef(null);
+  const hintRef = useRef(null);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
     const heart = heartRef.current;
     const calendar = calendarRef.current;
     const dateHeart = dateHeartRef.current;
+    const hint = hintRef.current;
 
-    if (!section || !heart || !calendar || !dateHeart) return;
+    if (!section || !heart || !calendar || !dateHeart) {
+      return;
+    }
 
     const ctx = gsap.context(() => {
       const heartLength = heart.getTotalLength();
@@ -71,21 +92,44 @@ export default function Savethedate() {
         strokeDashoffset: heartLength,
       });
 
-      gsap.set(".sd-calendar-item", { opacity: 0, y: 7 });
+      gsap.set(".sd-calendar-item", {
+        opacity: 0,
+        y: 7,
+      });
+
       gsap.set(calendar, {
         opacity: 0,
         scaleY: 0.05,
         transformOrigin: "center top",
       });
-      gsap.set(dateHeart, { opacity: 0, scale: 0.3 });
+
+      gsap.set(dateHeart, {
+        opacity: 0,
+        scale: 0.3,
+      });
+
       gsap.set(".sd-vine-stem", {
         strokeDasharray: 500,
         strokeDashoffset: 500,
       });
-      gsap.set(".sd-vine-leaf", { opacity: 0, scale: 0.4 });
-      gsap.set(".sd-frame-ornament", { opacity: 0 });
-      gsap.set(".sd-heart-glow", { opacity: 0 });
-      gsap.set(".sd-heart-shine", { opacity: 0, xPercent: -130 });
+
+      gsap.set(".sd-vine-leaf", {
+        opacity: 0,
+        scale: 0.4,
+      });
+
+      gsap.set(".sd-frame-ornament", {
+        opacity: 0,
+      });
+
+      gsap.set(".sd-heart-glow", {
+        opacity: 0,
+      });
+
+      gsap.set(".sd-heart-shine", {
+        opacity: 0,
+        xPercent: -130,
+      });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -99,7 +143,6 @@ export default function Savethedate() {
         },
       });
 
-      // The entire sequence progresses with the user's scroll.
       tl.to(".sd-frame-ornament", {
         opacity: 1,
         duration: 0.08,
@@ -127,7 +170,11 @@ export default function Savethedate() {
         )
         .fromTo(
           ".sd-eyebrow",
-          { opacity: 0, y: 14, letterSpacing: "8px" },
+          {
+            opacity: 0,
+            y: 14,
+            letterSpacing: "8px",
+          },
           {
             opacity: 1,
             y: 0,
@@ -147,7 +194,10 @@ export default function Savethedate() {
         )
         .to(
           ".sd-heart-glow",
-          { opacity: 0.65, duration: 0.1 },
+          {
+            opacity: 0.65,
+            duration: 0.1,
+          },
           0.48
         )
         .to(
@@ -202,36 +252,69 @@ export default function Savethedate() {
         )
         .to(
           ".sd-final-glint",
-          { opacity: 0.3, duration: 0.1 },
+          {
+            opacity: 0.3,
+            duration: 0.1,
+          },
           0.94
         );
 
-      // Ambient animation remains independent of scroll progress.
+      // Scroll hint hides while scrolling down and returns on scrolling up.
+      if (hint) {
+        gsap.fromTo(
+          hint,
+          {
+            opacity: 1,
+            y: 0,
+          },
+          {
+            opacity: 0,
+            y: 12,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: "+=220",
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      }
+
+      // Floating golden particles.
       gsap.to(".sd-particle", {
         y: "random(-20, 20)",
         x: "random(-12, 12)",
         opacity: "random(0.2, 0.9)",
         duration: "random(2, 5)",
-        stagger: { each: 0.04, from: "random" },
+        stagger: {
+          each: 0.04,
+          from: "random",
+        },
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
       });
 
+      // Twinkling stars.
       gsap.to(".sd-star", {
         opacity: "random(0.2, 1)",
         scale: "random(0.7, 1.3)",
         rotation: "random(-20, 20)",
         duration: "random(1.1, 2.5)",
-        stagger: { each: 0.1, from: "random" },
+        stagger: {
+          each: 0.1,
+          from: "random",
+        },
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
       });
 
+      // Rotating decorative orbits.
       gsap.to(".sd-orbit-a", {
         rotation: 360,
-        transformOrigin: "center center",
         duration: 35,
         repeat: -1,
         ease: "none",
@@ -239,7 +322,6 @@ export default function Savethedate() {
 
       gsap.to(".sd-orbit-b", {
         rotation: -360,
-        transformOrigin: "center center",
         duration: 48,
         repeat: -1,
         ease: "none",
@@ -265,7 +347,8 @@ export default function Savethedate() {
           position: relative;
           isolation: isolate;
           width: 100%;
-          min-height: 100svh;
+          height: 100svh;
+          min-height: 540px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -274,7 +357,12 @@ export default function Savethedate() {
           color: #87612d;
           font-family: Georgia, "Times New Roman", serif;
           background:
-            radial-gradient(ellipse at 50% 42%, #fffefa 0%, #fff9ec 48%, #ead8b6 100%);
+            radial-gradient(
+              ellipse at 50% 42%,
+              #fffefa 0%,
+              #fff9ec 48%,
+              #ead8b6 100%
+            );
         }
 
         .sd-section *,
@@ -300,6 +388,72 @@ export default function Savethedate() {
           border: 1px solid rgba(176, 132, 59, 0.24);
           pointer-events: none;
         }
+
+        /* SCROLL INDICATOR */
+
+        .sd-scroll-hint {
+          position: absolute;
+          z-index: 20;
+          top: 32px;
+          bottom: auto;
+          left: 50%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          transform: translateX(-50%);
+          color: #99703a;
+          font-family: Arial, sans-serif;
+          pointer-events: none;
+          text-align: center;
+          white-space: nowrap;
+          will-change: opacity, transform;
+        }
+
+        .sd-scroll-hint-text {
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 2.5px;
+          line-height: 1.5;
+          text-transform: uppercase;
+          color: #8b622c;
+          text-shadow: 0 1px 3px rgba(255, 250, 236, 0.8);
+        }
+
+        .sd-scroll-hint-arrow {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 27px;
+          height: 27px;
+          color: #b28a4b;
+          animation: sd-arrow-bounce 1.7s ease-in-out infinite;
+        }
+
+        .sd-scroll-hint-arrow svg {
+          width: 22px;
+          height: 22px;
+          fill: none;
+          stroke: currentColor;
+          stroke-width: 1.4;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        @keyframes sd-arrow-bounce {
+          0%, 100% {
+            transform: translateY(0);
+            opacity: 0.65;
+          }
+
+          50% {
+            transform: translateY(8px);
+            opacity: 1;
+          }
+        }
+
+        /* MAIN CONTENT */
 
         .sd-content {
           position: relative;
@@ -359,6 +513,8 @@ export default function Savethedate() {
           pointer-events: none;
         }
 
+        /* ROTATING ORBITS */
+
         .sd-orbit {
           position: absolute;
           z-index: 0;
@@ -393,7 +549,8 @@ export default function Savethedate() {
           box-shadow: 0 0 8px rgba(196, 160, 92, 0.75);
         }
 
-        /* Transparent calendar: dates sit directly over the heart */
+        /* CALENDAR */
+
         .sd-calendar {
           position: relative;
           z-index: 2;
@@ -503,6 +660,8 @@ export default function Savethedate() {
           text-shadow: 0 1px 2px rgba(83, 50, 10, 0.4);
         }
 
+        /* FOOTER */
+
         .sd-footer {
           display: flex;
           align-items: center;
@@ -538,6 +697,8 @@ export default function Savethedate() {
           width: 100%;
           height: 100%;
         }
+
+        /* FLOATING PARTICLES */
 
         .sd-ambient {
           position: absolute;
@@ -579,6 +740,8 @@ export default function Savethedate() {
         .sd-star-11 { top: 48%; left: 19%; font-size: 9px; }
         .sd-star-12 { top: 52%; right: 18%; font-size: 11px; }
 
+        /* BOTANICAL DECORATION */
+
         .sd-vine {
           position: absolute;
           z-index: 1;
@@ -612,6 +775,8 @@ export default function Savethedate() {
         .sd-vine-dot {
           fill: #b18d50;
         }
+
+        /* CORNER ORNAMENTS */
 
         .sd-frame-ornament {
           position: absolute;
@@ -726,10 +891,40 @@ export default function Savethedate() {
           .sd-footer-line {
             width: 12px;
           }
+
+          .sd-scroll-hint {
+            top: 28px;
+            bottom: auto;
+          }
+
+          .sd-scroll-hint-text {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+          }
+        }
+
+        @media (max-height: 650px) {
+          .sd-scroll-hint {
+            top: 25px;
+            bottom: auto;
+          }
+
+          .sd-scroll-hint-arrow {
+            width: 21px;
+            height: 21px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .sd-scroll-hint-arrow {
+            animation: none;
+          }
         }
       `}</style>
 
-      {/* Floating gold dust and stars */}
+      {/* FLOATING GOLD PARTICLES */}
+
       <div className="sd-ambient" aria-hidden="true">
         {Array.from({ length: 44 }, (_, i) => (
           <span
@@ -744,36 +939,35 @@ export default function Savethedate() {
         ))}
 
         {Array.from({ length: 12 }, (_, i) => (
-          <span key={`star-${i}`} className={`sd-star sd-star-${i + 1}`}>
+          <span
+            key={`star-${i}`}
+            className={`sd-star sd-star-${i + 1}`}
+          >
             ✦
           </span>
         ))}
       </div>
 
-      {/* Corner ornaments */}
+      {/* CORNER DECORATIONS */}
+
       {["tl", "tr", "bl", "br"].map((corner) => (
-        <div
+        <CornerOrnament
           key={corner}
-          className={`sd-frame-ornament sd-frame-${corner}`}
-          aria-hidden="true"
-        >
-          <svg viewBox="0 0 48 48">
-            <path d="M2 24 V2 H24" />
-            <path d="M7 17 V7 H17" />
-            <path d="M2 11 C8 11 11 8 11 2" />
-            <path d="M12 24 C17 18 22 15 28 14" />
-            <path d="M22 3 C22 9 27 13 33 13" />
-            <path d="M4 30 C11 29 15 33 16 40" />
-            <path d="M27 7 C32 8 36 12 37 17" />
-          </svg>
-        </div>
+          corner={corner}
+        />
       ))}
+
+      {/* BOTANICAL VINES */}
 
       <BotanicalVine side="left" />
       <BotanicalVine side="right" />
 
+      {/* MAIN WEDDING CALENDAR */}
+
       <main className="sd-content">
-        <p className="sd-eyebrow">A DAY TO REMEMBER</p>
+        <p className="sd-eyebrow">
+          A DAY TO REMEMBER
+        </p>
 
         <div className="sd-heart-stage">
           <div className="sd-orbit sd-orbit-a">
@@ -846,7 +1040,10 @@ export default function Savethedate() {
               </clipPath>
             </defs>
 
-            <path className="sd-heart-glow" d={HEART_PATH} />
+            <path
+              className="sd-heart-glow"
+              d={HEART_PATH}
+            />
 
             <path
               ref={heartRef}
@@ -866,15 +1063,22 @@ export default function Savethedate() {
             </g>
           </svg>
 
-          <span className="sd-final-glint" aria-hidden="true" />
+          <span
+            className="sd-final-glint"
+            aria-hidden="true"
+          />
 
-          {/* No rectangle or card behind the calendar */}
-          <div className="sd-calendar" ref={calendarRef}>
+          <div
+            className="sd-calendar"
+            ref={calendarRef}
+          >
             <h3 className="sd-calendar-heading sd-calendar-item">
               NOVEMBER
             </h3>
 
-            <p className="sd-year sd-calendar-item">2026</p>
+            <p className="sd-year sd-calendar-item">
+              2026
+            </p>
 
             <div className="sd-weekdays">
               {weekdays.map((day, i) => (
@@ -889,10 +1093,19 @@ export default function Savethedate() {
 
             <div className="sd-calendar-grid">
               {days.map((day) => (
-                <div key={day} className="sd-day sd-calendar-item">
+                <div
+                  key={day}
+                  className="sd-day sd-calendar-item"
+                >
                   {day === 24 ? (
-                    <span className="sd-date-heart" ref={dateHeartRef}>
-                      <svg viewBox="0 0 40 40" aria-hidden="true">
+                    <span
+                      className="sd-date-heart"
+                      ref={dateHeartRef}
+                    >
+                      <svg
+                        viewBox="0 0 40 40"
+                        aria-hidden="true"
+                      >
                         <defs>
                           <linearGradient
                             id="sdDateGradient"
@@ -931,36 +1144,65 @@ export default function Savethedate() {
           <span className="sd-footer-line" />
         </div>
 
-        <div className="sd-bottom-decoration" aria-hidden="true">
+        <div
+          className="sd-bottom-decoration"
+          aria-hidden="true"
+        >
           <svg viewBox="0 0 112 22" fill="none">
             <path
               d="M3 11 H40 C45 11 47 5 52 5 C57 5 59 11 64 11 H109"
               stroke="#b7924f"
               strokeWidth="0.8"
             />
+
             <path
               d="M42 11 C46 17 51 18 56 11 C61 18 66 17 70 11"
               stroke="#b7924f"
               strokeWidth="0.8"
             />
+
             <path
               d="M50 5 C48 1 43 2 42 6 C46 7 48 7 50 5Z"
               fill="rgba(189,145,61,0.2)"
               stroke="#b7924f"
               strokeWidth="0.7"
             />
+
             <path
               d="M62 5 C64 1 69 2 70 6 C66 7 64 7 62 5Z"
               fill="rgba(189,145,61,0.2)"
               stroke="#b7924f"
               strokeWidth="0.7"
             />
+
             <circle cx="56" cy="11" r="2" fill="#bd913d" />
             <circle cx="3" cy="11" r="1.2" fill="#bd913d" />
             <circle cx="109" cy="11" r="1.2" fill="#bd913d" />
           </svg>
         </div>
       </main>
+
+      {/* SCROLL TO REVEAL — ABOVE THE ARROW */}
+
+      <div
+        className="sd-scroll-hint"
+        ref={hintRef}
+        aria-label="Scroll to reveal the wedding date"
+      >
+        <span className="sd-scroll-hint-text">
+          SCROLL TO REVEAL
+        </span>
+
+        <span
+          className="sd-scroll-hint-arrow"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3 V20" />
+            <path d="M5 13 L12 20 L19 13" />
+          </svg>
+        </span>
+      </div>
     </section>
   );
 }

@@ -165,7 +165,7 @@ export default function Story() {
                 md:text-3xl
               "
             >
-              shreshi & siddharth
+              Shreshi & Siddharth
             </p>
 
           </div>
