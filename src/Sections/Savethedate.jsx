@@ -259,27 +259,14 @@ export default function Savethedate() {
           0.94
         );
 
-      // Scroll hint hides while scrolling down and returns on scrolling up.
+      // Keep the hint visible until the full reveal animation has completed.
       if (hint) {
-        gsap.fromTo(
-          hint,
-          {
-            opacity: 1,
-            y: 0,
-          },
-          {
-            opacity: 0,
-            y: 12,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top top",
-              end: "+=220",
-              scrub: true,
-              invalidateOnRefresh: true,
-            },
-          }
-        );
+        tl.to(hint, {
+          opacity: 0,
+          y: 12,
+          duration: 0.05,
+          ease: "none",
+        });
       }
 
       // Floating golden particles.
@@ -392,17 +379,18 @@ export default function Savethedate() {
         /* SCROLL INDICATOR */
 
         .sd-scroll-hint {
-          position: absolute;
+          position: relative;
           z-index: 20;
-          top: 32px;
+          top: auto;
           bottom: auto;
-          left: 50%;
+          left: auto;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
           gap: 4px;
-          transform: translateX(-50%);
+          transform: none;
+          margin: 0 auto 8px;
           color: #99703a;
           font-family: Arial, sans-serif;
           pointer-events: none;
@@ -568,7 +556,7 @@ export default function Savethedate() {
         }
 
         .sd-calendar-heading {
-          margin: 0;
+          margin: 7px 0 0;
           color: #865c25;
           font-size: clamp(12px, 3.4vw, 15px);
           font-weight: 400;
@@ -577,7 +565,7 @@ export default function Savethedate() {
         }
 
         .sd-year {
-          margin: 3px 0 7px;
+          margin: 3px 0 0;
           color: #ad874b;
           font-size: 9px;
           letter-spacing: 3px;
@@ -863,10 +851,6 @@ export default function Savethedate() {
             letter-spacing: 1.8px;
           }
 
-          .sd-year {
-            margin-bottom: 5px;
-          }
-
           .sd-day {
             height: 15px;
             font-size: 7px;
@@ -892,11 +876,6 @@ export default function Savethedate() {
             width: 12px;
           }
 
-          .sd-scroll-hint {
-            top: 28px;
-            bottom: auto;
-          }
-
           .sd-scroll-hint-text {
             font-size: 11px;
             font-weight: 800;
@@ -905,11 +884,6 @@ export default function Savethedate() {
         }
 
         @media (max-height: 650px) {
-          .sd-scroll-hint {
-            top: 25px;
-            bottom: auto;
-          }
-
           .sd-scroll-hint-arrow {
             width: 21px;
             height: 21px;
@@ -965,6 +939,23 @@ export default function Savethedate() {
       {/* MAIN WEDDING CALENDAR */}
 
       <main className="sd-content">
+        {/* SCROLL TO REVEAL — POSITIONED ABOVE THE HEART */}
+        <div
+          className="sd-scroll-hint"
+          ref={hintRef}
+          aria-label="Scroll to reveal the wedding date"
+        >
+          <span className="sd-scroll-hint-text text-2xl">
+            SCROLL TO REVEAL
+          </span>
+          <span className="sd-scroll-hint-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3 V20" />
+              <path d="M5 13 L12 20 L19 13" />
+            </svg>
+          </span>
+        </div>
+
         <p className="sd-eyebrow">
           A DAY TO REMEMBER
         </p>
@@ -1072,14 +1063,6 @@ export default function Savethedate() {
             className="sd-calendar"
             ref={calendarRef}
           >
-            <h3 className="sd-calendar-heading sd-calendar-item">
-              NOVEMBER
-            </h3>
-
-            <p className="sd-year sd-calendar-item">
-              2026
-            </p>
-
             <div className="sd-weekdays">
               {weekdays.map((day, i) => (
                 <span
@@ -1135,6 +1118,13 @@ export default function Savethedate() {
                 </div>
               ))}
             </div>
+
+            <h3 className="sd-calendar-heading sd-calendar-item sd-calendar-heading-bottom">
+              NOVEMBER
+            </h3>
+            <p className="sd-year sd-calendar-item sd-year-bottom">
+              2026
+            </p>
           </div>
         </div>
 
@@ -1181,28 +1171,6 @@ export default function Savethedate() {
           </svg>
         </div>
       </main>
-
-      {/* SCROLL TO REVEAL — ABOVE THE ARROW */}
-
-      <div
-        className="sd-scroll-hint"
-        ref={hintRef}
-        aria-label="Scroll to reveal the wedding date"
-      >
-        <span className="sd-scroll-hint-text">
-          SCROLL TO REVEAL
-        </span>
-
-        <span
-          className="sd-scroll-hint-arrow"
-          aria-hidden="true"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M12 3 V20" />
-            <path d="M5 13 L12 20 L19 13" />
-          </svg>
-        </span>
-      </div>
     </section>
   );
 }

@@ -69,7 +69,7 @@ export default function Loader({ onComplete }) {
           onComplete,
         });
       }
-    }, 4000); // 4 Seconds Interval
+    }, 3000); // 4 Seconds Interval
 
     return () => clearInterval(interval);
   }, [onComplete]);
