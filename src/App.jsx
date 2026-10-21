@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 
 import Loader from "./Sections/Loader";
@@ -8,7 +9,7 @@ import Savethedate from "./Sections/Savethedate";
 import Location from "./Sections/Location";
 import Joinus from "./Sections/Joinus";
 
-// import weddingMusic from "./assets/music/wedding-music.mp3";
+import weddingMusic from "./assets/music/wedding-music.mp3";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -16,19 +17,18 @@ function App() {
 
   const audioRef = useRef(null);
 
-  // --------------------------------
-  // START MUSIC AFTER USER INTERACTION
-  // --------------------------------
-
+  // Start the single shared audio element after the envelope is opened.
   useEffect(() => {
     const startMusic = async () => {
-      if (!audioRef.current) return;
+      const audio = audioRef.current;
+      if (!audio) return;
 
       try {
-        await audioRef.current.play();
+        await audio.play();
         setMusicPlaying(true);
       } catch (error) {
-        console.log("Music waiting for user interaction");
+        console.error("Music playback failed:", error);
+        setMusicPlaying(false);
       }
     };
 
@@ -39,43 +39,39 @@ function App() {
     };
   }, []);
 
-  // --------------------------------
-  // MUSIC TOGGLE
-  // --------------------------------
-
+  // Play / pause the shared audio.
   const toggleMusic = async () => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    if (audioRef.current.paused) {
+    if (audio.paused) {
       try {
-        await audioRef.current.play();
+        await audio.play();
         setMusicPlaying(true);
       } catch (error) {
-        console.log("Unable to play music");
+        console.error("Unable to play music:", error);
+        setMusicPlaying(false);
       }
     } else {
-      audioRef.current.pause();
+      audio.pause();
       setMusicPlaying(false);
     }
   };
 
   return (
     <>
-      {/* --------------------------------
-          WEDDING MUSIC
-      -------------------------------- */}
-
-      {/* <audio
+      {/* SINGLE SHARED WEDDING MUSIC PLAYER */}
+      <audio
         ref={audioRef}
         src={weddingMusic}
         loop
         preload="auto"
-      /> */}
+        onPlay={() => setMusicPlaying(true)}
+        onPause={() => setMusicPlaying(false)}
+        onEnded={() => setMusicPlaying(false)}
+      />
 
-      {/* --------------------------------
-          LOADER
-      -------------------------------- */}
-
+      {/* LOADER */}
       {loading && (
         <Loader
           onComplete={() => {
@@ -84,10 +80,7 @@ function App() {
         />
       )}
 
-      {/* --------------------------------
-          WEBSITE
-      -------------------------------- */}
-
+      {/* WEBSITE */}
       {!loading && (
         <>
           <Hero />
@@ -99,29 +92,18 @@ function App() {
         </>
       )}
 
-      {/* --------------------------------
-          MUSIC BUTTON
-      -------------------------------- */}
-
+      {/* MUSIC BUTTON */}
       {!loading && (
         <button
+          type="button"
           onClick={toggleMusic}
           aria-label={musicPlaying ? "Pause music" : "Play music"}
+          title={musicPlaying ? "Pause music" : "Play music"}
           className="
-            fixed
-            right-5
-            bottom-5
-            z-[9999]
-            w-12
-            h-12
-            rounded-full
-            flex
-            items-center
-            justify-center
-            backdrop-blur-md
-            transition-all
-            duration-300
-            hover:scale-110
+            fixed bottom-5 right-5 z-[9999]
+            flex h-12 w-12 items-center justify-center
+            rounded-full backdrop-blur-md
+            transition-all duration-300 hover:scale-110
           "
           style={{
             background: "rgba(255,248,235,0.82)",
@@ -131,21 +113,21 @@ function App() {
           }}
         >
           {musicPlaying ? (
-            <div className="flex items-end gap-[3px] h-4">
+            <div className="flex h-4 items-end gap-[3px]">
               <span
-                className="w-[2px] bg-[#8F6735] rounded-full animate-pulse"
+                className="w-[2px] animate-pulse rounded-full bg-[#8F6735]"
                 style={{ height: "9px" }}
               />
               <span
-                className="w-[2px] bg-[#8F6735] rounded-full animate-pulse"
+                className="w-[2px] animate-pulse rounded-full bg-[#8F6735]"
                 style={{ height: "15px", animationDelay: "0.15s" }}
               />
               <span
-                className="w-[2px] bg-[#8F6735] rounded-full animate-pulse"
+                className="w-[2px] animate-pulse rounded-full bg-[#8F6735]"
                 style={{ height: "11px", animationDelay: "0.3s" }}
               />
               <span
-                className="w-[2px] bg-[#8F6735] rounded-full animate-pulse"
+                className="w-[2px] animate-pulse rounded-full bg-[#8F6735]"
                 style={{ height: "16px", animationDelay: "0.45s" }}
               />
             </div>

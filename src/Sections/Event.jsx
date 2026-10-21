@@ -32,7 +32,7 @@ const events = [
   },
   {
     number: "V",
-    title: "BHOJAN",
+    title: "PRITIBHOJ",
     date: "24 NOVEMBER 2026",
     time: "12:30 PM ONWARDS",
   },
@@ -351,9 +351,9 @@ function EventCard({ event }) {
         </p>
 
         {/* EVENT NAME */}
-        <h3 className="mt-1.5 break-words font-serif text-[clamp(17px,4.5vw,24px)] font-light leading-tight tracking-[0.01em] text-[#f5e8d4] sm:mt-2 sm:text-2xl sm:tracking-[0.04em] md:text-5xl md:tracking-[0.08em]">
-          {event.title}
-        </h3>
+      <h3 className="mt-1.5 whitespace-nowrap font-serif text-[clamp(17px,4.5vw,24px)] font-light leading-tight tracking-[0.01em] text-[#f5e8d4] sm:mt-2 sm:text-2xl sm:tracking-[0.04em] md:text-4xl md:tracking-[0.06em]">
+  {event.title}
+</h3>
 
         {/* GOLD ORNAMENT */}
         <div className="my-2 flex items-center gap-2 sm:my-3 md:my-4">

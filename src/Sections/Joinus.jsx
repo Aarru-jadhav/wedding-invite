@@ -297,10 +297,10 @@ function Joinus() {
           </div>
 
           <p className="joinus-message font-normal">
-            Your presence will make our
-            <br className="hidden sm:block" />
-            celebration even more special.
-          </p>
+           Your presence will make our{" "}
+  <br className="hidden sm:block" />
+  celebration even more special.
+</p>
         </div>
       </div>
     </section>

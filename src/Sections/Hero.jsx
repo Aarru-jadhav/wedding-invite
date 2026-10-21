@@ -4,7 +4,6 @@ import { gsap } from "gsap";
 
 import openingImage from "../assets/images/wed1.png";
 import weddingVideo from "../assets/video/wedding-intro.mp4";
-import weddingMusic from "../assets/music/wedding-music.mp3";
 
 export default function Hero() {
   const [opened, setOpened] = useState(false);
@@ -16,7 +15,6 @@ export default function Hero() {
   const rightEnvelope = useRef(null);
   const tapButton = useRef(null);
   const videoRef = useRef(null);
-  const audioRef = useRef(null);
   const weddingContent = useRef(null);
   const startedRef = useRef(false);
   const timelineRef = useRef(null);
@@ -40,36 +38,30 @@ export default function Hero() {
     };
   }, [canScroll]);
 
-  // Reset video and music on mount; clean up on unmount.
+  // Reset the video on mount and clean up on unmount.
   useEffect(() => {
     const video = videoRef.current;
-    const audio = audioRef.current;
 
     if (video) {
       video.pause();
       video.currentTime = 0;
     }
 
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-
     return () => {
       timelineRef.current?.kill();
 
-      if (video) video.pause();
-      if (audio) audio.pause();
+      if (video) {
+        video.pause();
+      }
     };
   }, []);
 
-  const handleOpen = async () => {
+  const handleOpen = () => {
     if (startedRef.current) return;
 
     startedRef.current = true;
 
     const video = videoRef.current;
-    const audio = audioRef.current;
 
     if (!video) {
       startedRef.current = false;
@@ -82,34 +74,28 @@ export default function Hero() {
     try {
       video.currentTime = 0;
 
-      // Start the video, but keep the envelope visible.
-      await video.play();
-
-      setVideoStarted(true);
-
-      // Start background wedding music after the user clicks.
-      if (audio) {
-        audio.currentTime = 0;
-        audio.volume = 0.7;
-
-        audio.play().catch((error) => {
-          console.error("Wedding music playback failed:", error);
-        });
-      }
-
-      window.dispatchEvent(new Event("weddingMusicStart"));
-
       // Animate both envelope halves before removing the cover.
       const tl = gsap.timeline({
         onComplete: () => {
-          // Remove the envelope only after it has fully opened.
           setOpened(true);
           setCanScroll(true);
+
+          // Begin playback after the envelope has finished opening.
+          video.play()
+            .then(() => {
+              setVideoStarted(true);
+              window.dispatchEvent(new Event("weddingMusicStart"));
+            })
+            .catch((error) => {
+              console.error("Wedding video playback failed:", error);
+              startedRef.current = false;
+            });
         },
       });
 
       timelineRef.current = tl;
 
+      // Fade out the click overlay.
       tl.to(
         tapButton.current,
         {
@@ -120,7 +106,7 @@ export default function Hero() {
         0
       );
 
-      // Left side slides away.
+      // Open the left envelope half.
       tl.to(
         leftEnvelope.current,
         {
@@ -131,7 +117,7 @@ export default function Hero() {
         0.25
       );
 
-      // Right side slides away.
+      // Open the right envelope half.
       tl.to(
         rightEnvelope.current,
         {
@@ -142,7 +128,7 @@ export default function Hero() {
         0.25
       );
 
-      // Reveal wedding names as the envelope opens.
+      // Reveal the wedding names.
       tl.fromTo(
         weddingContent.current,
         {
@@ -176,15 +162,9 @@ export default function Hero() {
     );
   };
 
-  const handleAudioError = (event) => {
-    console.error(
-      "Wedding music loading error:",
-      event.currentTarget.error
-    );
-  };
-
   return (
     <section className="relative h-[100svh] min-h-[550px] w-full overflow-hidden bg-[#f4e4c9]">
+
       {/* BACKGROUND WEDDING VIDEO */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-[#190505]">
         <video
@@ -207,21 +187,13 @@ export default function Hero() {
         />
       </div>
 
-      {/* BACKGROUND WEDDING MUSIC */}
-      <audio
-        ref={audioRef}
-        src={weddingMusic}
-        loop
-        preload="auto"
-        onError={handleAudioError}
-      />
-
       {/* WEDDING NAMES */}
       <div
         ref={weddingContent}
         className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-4 text-center text-[#49351f] opacity-0 sm:px-6"
       >
-        <div className="w-full max-w-5xl">
+        <div className="relative flex h-full w-full max-w-5xl flex-col items-center justify-center pb-20">
+
           <div className="mb-5 flex items-center justify-center gap-4 sm:mb-6 sm:gap-5">
             <span className="h-px w-10 bg-[#8d6a3e]/80 sm:w-20" />
             <span className="text-2xl text-[#8d6a3e]">❦</span>
@@ -229,10 +201,10 @@ export default function Hero() {
           </div>
 
           <p className="mb-6 font-serif text-xs tracking-[0.1em] text-[#49351f] sm:text-sm md:mb-7 md:text-xl">
-            Mark your Calendars to rejoice in the Wedding of
+            Mark your Calendars to Celebrate the Wedding of
           </p>
 
-          <h1 className="font-serif text-3xl font-medium tracking-wide text-[#49351f] sm:text-5xl md:text-7xl lg:text-8xl">
+          <h1 className="break-words font-serif text-3xl font-medium tracking-wide text-[#49351f] sm:text-5xl md:text-7xl lg:text-8xl">
             Siddharth Vaishnav
           </h1>
 
@@ -240,13 +212,13 @@ export default function Hero() {
             &amp;
           </div>
 
-          <h2 className="font-serif text-3xl font-medium tracking-wide text-[#49351f] sm:text-5xl md:text-7xl lg:text-8xl">
+          <h2 className="break-words font-serif text-3xl font-medium tracking-wide text-[#49351f] sm:text-5xl md:text-7xl lg:text-8xl">
             Shreshi Parashar
           </h2>
 
           {/* SCROLL INDICATOR */}
-          <div className="absolute bottom-8 left-0 w-full text-center sm:bottom-10">
-            <p className="text-base font-bold uppercase tracking-[0.3em] text-[#49351f] sm:text-xl sm:tracking-[0.4em]">
+          <div className="absolute bottom-5 left-0 w-full text-center sm:bottom-8">
+            <p className="text-sm font-bold uppercase tracking-[0.3em] text-[#49351f] sm:text-xl sm:tracking-[0.4em]">
               Scroll
             </p>
 
@@ -257,16 +229,16 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ENVELOPE COVER — STAYS MOUNTED DURING ANIMATION */}
+      {/* RESPONSIVE ENVELOPE COVER */}
       {!opened && (
         <div className="absolute inset-0 z-50 overflow-hidden bg-[#f4e4c9]">
-          {/* LEFT ENVELOPE HALF */}
+
+          {/* LEFT HALF */}
           <div
             ref={leftEnvelope}
-            className="absolute inset-0 z-10 overflow-hidden"
+            className="envelope-half absolute inset-0 z-10 overflow-hidden"
             style={{
-              clipPath:
-                "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
+              clipPath: "polygon(0 0, 50% 0, 50% 100%, 0 100%)",
               willChange: "transform",
             }}
           >
@@ -274,17 +246,16 @@ export default function Hero() {
               src={openingImage}
               alt="Wedding invitation envelope"
               draggable="false"
-              className="envelope-cover-image absolute inset-0 h-full w-full max-w-none select-none"
+              className="envelope-image absolute select-none"
             />
           </div>
 
-          {/* RIGHT ENVELOPE HALF */}
+          {/* RIGHT HALF */}
           <div
             ref={rightEnvelope}
-            className="absolute inset-0 z-10 overflow-hidden"
+            className="envelope-half absolute inset-0 z-10 overflow-hidden"
             style={{
-              clipPath:
-                "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
+              clipPath: "polygon(50% 0, 100% 0, 100% 100%, 50% 100%)",
               willChange: "transform",
             }}
           >
@@ -292,7 +263,7 @@ export default function Hero() {
               src={openingImage}
               alt="Wedding invitation envelope"
               draggable="false"
-              className="envelope-cover-image absolute inset-0 h-full w-full max-w-none select-none"
+              className="envelope-image absolute select-none"
             />
           </div>
         </div>
@@ -309,15 +280,54 @@ export default function Hero() {
         />
       )}
 
+      {/* RESPONSIVE ENVELOPE IMAGE */}
       <style>{`
-        .envelope-cover-image {
-          object-fit: cover;
-          object-position: center;
+        .envelope-half {
+          background: #f4e4c9;
         }
 
+        .envelope-image {
+          display: block;
+          width: 100%;
+          height: 100%;
+          max-width: none;
+          object-fit: cover;
+          object-position: center center;
+          user-select: none;
+          -webkit-user-drag: none;
+          pointer-events: none;
+        }
+
+        /* MOBILE: fill the screen */
+        @media (max-width: 767px) {
+          .envelope-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+          }
+        }
+
+        /* DESKTOP: responsive full-screen envelope */
         @media (min-width: 768px) {
-          .envelope-cover-image {
-            object-fit: contain;
+          .envelope-half {
+            left: 0;
+            right: 0;
+            width: 100%;
+            transform: none;
+          }
+
+          .envelope-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .envelope-image {
+            -webkit-user-drag: none;
           }
         }
       `}</style>
